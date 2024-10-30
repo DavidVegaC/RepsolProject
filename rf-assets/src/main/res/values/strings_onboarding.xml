@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="onboarding_welcome">Bienvenido a tu nuevo aplicativo Repsol Flotas</string>
+    <string name="onboarding_welcome_description">Hemos creado este aplicativo para que tu experiencia sea ágil, sencilla y automática</string>
+    <string name="onboarding_card_information">Información de tarjeta</string>
+    <string name="onboarding_card_information_description">Toda la información que necesitas al alcance de tu mano</string>
+    <string name="onboarding_route_tracking">Seguimiento de rutas</string>
+    <string name="onboarding_route_tracking_description">Lleva el control de tus viajes con nuestra nueva función de Tracking de rutas</string>
+    <string name="onboarding_start_your_journey">Inicia tu viaje</string>
+    <string name="onboarding_start_your_journey_description">Accede desde cualquier lugar a toda tu información. ¿Estás listo?</string>
+
+    <string name="onboarding_content_description_logo">Logo</string>
+    <string name="onboarding_content_description_carousel">Carrusel del Onboarding</string>
+</resources>

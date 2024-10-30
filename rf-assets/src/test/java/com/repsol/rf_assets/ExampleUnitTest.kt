@@ -1,4 +1,4 @@
-package com.repsol.rf_drawable
+package com.repsol.rf_assets
 
 import org.junit.Test
 

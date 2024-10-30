@@ -3,7 +3,7 @@ plugins {
 }
 
 klean {
-    name = "rf_drawable"
+    name = "rf_assets"
     features {
         useUiDependencies = false
     }
