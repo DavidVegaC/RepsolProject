@@ -13,6 +13,7 @@ klean {
 }
 
 dependencies {
+    implementation(libs.gigya.sdk.core)
     api(project(":rf-features:rf-auth"))
     api(project(":rf-features:rf-home"))
     implementation(project(":rf-core-ui"))

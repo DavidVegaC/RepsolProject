@@ -97,6 +97,7 @@ fun Project.addUiDependencies(){
     addAndroidTestDependencies()
     addComposeTestDependencies()
     dependencies {
+        implementation(libs["google-gson"])
         implementation(libs["coil"])
         implementation(libs["coil-network-okhttp"])
     }

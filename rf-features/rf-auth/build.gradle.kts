@@ -12,8 +12,12 @@ klean {
 }
 
 dependencies {
+    implementation(libs.gigya.sdk.core)
+
+    implementation(project(":rf-core-domain"))
     implementation(project(":rf-core-platform"))
     implementation(project(":rf-core-ui"))
+    implementation(project(":railway"))
     implementation((project(":rf-assets")))
     implementation(project(":rf-tools"))
     implementation(project(":rf-navigation"))

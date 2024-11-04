@@ -1,11 +1,13 @@
 package com.repsol.auth.data.repository
 
 import com.repsol.auth.data.model.OnboardingPage
+import com.repsol.auth.domain.repository.OnboardingRepository
 import com.repsol.rf_assets.R
 import javax.inject.Inject
 
-class OnboardingRepository @Inject constructor() {
-    fun getOnboardingPages(): List<OnboardingPage> {
+class OnboardingRepositoryImpl @Inject constructor(): OnboardingRepository {
+
+    override fun getOnboardingPages(): List<OnboardingPage> {
         return listOf(
             OnboardingPage(
                 titleRes = R.string.onboarding_welcome,

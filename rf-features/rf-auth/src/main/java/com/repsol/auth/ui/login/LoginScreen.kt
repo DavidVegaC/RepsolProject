@@ -1,18 +1,10 @@
 package com.repsol.auth.ui.login
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -26,9 +18,9 @@ import com.repsol.core_ui.stateful.ScreenPreview
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.navigation.MainGraph
 import com.repsol.navigation.core.localNavController
-import com.repsol.auth.ui.login.interactor.LoginUiState as UiState
 import com.repsol.auth.ui.login.interactor.LoginUiEvent as UiEvent
 import com.repsol.auth.ui.login.interactor.LoginUiIntent as UiIntent
+import com.repsol.auth.ui.login.interactor.LoginUiState as UiState
 
 @Composable
 fun LoginScreen() = Stateful<LoginViewModel> {
@@ -47,10 +39,10 @@ fun LoginScreen() = Stateful<LoginViewModel> {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
-            value = uiState.username,
+            value = uiState.email,
             onValueChange = {
                 setUiState {
-                    copy(username = it)
+                    copy(email = it)
                 }
             },
             label = {
@@ -85,6 +77,5 @@ fun LoginScreen() = Stateful<LoginViewModel> {
 fun DefaultLoginScreenPreview() {
     ScreenPreview(uiState = UiState()) {
         LoginScreen()
-
     }
 }

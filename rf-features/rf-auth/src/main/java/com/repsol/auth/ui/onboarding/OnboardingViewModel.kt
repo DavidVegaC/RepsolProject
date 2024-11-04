@@ -17,9 +17,7 @@ class OnboardingViewModel @Inject constructor(
 ): CoreViewModel<UiState, UiIntent, UiEvent>(
     savedStateHandle = savedStateHandle,
     defaultUiState = {
-        UiState(
-            pages = onboardingPageUseCase.execute()
-        )
+        UiState()
     }
 ) {
 
@@ -45,8 +43,11 @@ class OnboardingViewModel @Inject constructor(
         UiEvent.GoToLogin.send()
     }
 
-    private fun validateDisplayOnboarding() {
+    private suspend fun validateDisplayOnboarding() {
         // aqui se validaria si se necesita o no mostrar solo una vez (cambiar nombre de la funcion)
+        setUiState {
+            copy(pages = onboardingPageUseCase())
+        }
     }
 
     private fun goToNextPage(){
