@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import com.repsol.auth.domain.parameters.ValidateLoginParams
 import com.repsol.auth.domain.result.ValidateLoginResult
 import com.repsol.auth.domain.usecase.ValidateLoginUseCase
+import com.repsol.auth.ui.login.interactor.LoginUiIntent
 import com.repsol.core_platform.CoreViewModel
+import com.repsol.tools.utils.ValidationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.repsol.auth.ui.login.interactor.LoginUiEvent as UiEvent
@@ -24,7 +26,13 @@ class LoginViewModel @Inject constructor(
 
     override suspend fun handleIntent(intent: UiIntent) {
         when(intent) {
-            is UiIntent.OnLoginClick -> onLoginClick()
+            UiIntent.OnLoginClick -> onLoginClick()
+            is LoginUiIntent.OnEmailChanged -> updateEmail(intent.email)
+            is LoginUiIntent.OnPasswordChanged -> updatePassword(intent.password)
+            LoginUiIntent.OnForgotPasswordClick -> onForgotPassword()
+            LoginUiIntent.OnClearEmailClick -> clearEmail()
+            LoginUiIntent.OnClearPasswordClick -> clearPassword()
+            LoginUiIntent.OnTogglePasswordVisibility -> toggleVisibility()
         }
     }
 
@@ -42,4 +50,45 @@ class LoginViewModel @Inject constructor(
         }
         isLoading = false
     }
+
+    private fun onForgotPassword(){
+        //logica para redirigir a recuperar contraseña
+    }
+
+    private fun toggleVisibility(){
+        setUiState {
+            copy(isPasswordVisibility = !isPasswordVisibility)
+        }
+    }
+
+    private fun clearEmail(){
+        setUiState {
+            copy(email = "", emailError = null)
+        }
+    }
+
+    private fun clearPassword(){
+        setUiState {
+            copy(password = "", passwordError = null)
+        }
+    }
+
+    private fun updateEmail(email: String) {
+        if(ValidationUtils.isValidEmail(email)){
+            setUiState {
+                copy(email = email, emailError = null)
+            }
+        }else{
+            setUiState {
+                copy(email = email, emailError = "Formato de correo Inválido")
+            }
+        }
+    }
+
+    private fun updatePassword(password: String) {
+        setUiState {
+            copy(password = password, passwordError = null)
+        }
+    }
+
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="image_car">Imageen de fondo en la pantalla de inicio de sesión</string>
+    <string name="welcome_flotas">Bienvenido a Repsol Flotas</string>
+    <string name="email">Correo</string>
+    <string name="password">Contraseña</string>
+    <string name="placeholder_email">miusuario@empresa.com</string>
+    <string name="placeholder_password">Contraseña</string>
+    <string name="content_description_clear">Limpiar</string>
+    <string name="forgotPassword">¿Olvidaste tu contraseña?</string>
+    <string name="login">Ingresar</string>
+</resources>
