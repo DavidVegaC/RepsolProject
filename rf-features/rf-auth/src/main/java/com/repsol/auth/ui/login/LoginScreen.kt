@@ -14,22 +14,17 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +32,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -45,9 +39,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.repsol.auth.ui.login.interactor.LoginUiIntent
 import com.repsol.auth.ui.login.interactor.LoginUiState
-import com.repsol.core_platform.handler.UiState
+import com.repsol.components.button.RFButton
+import com.repsol.components.icon.RFIcon
+import com.repsol.components.style.RFColor
+import com.repsol.components.style.RFTextStyle
+import com.repsol.components.text.RFText
 import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.ScreenPreview
 import com.repsol.core_ui.stateful.Stateful
@@ -130,15 +127,14 @@ fun LoginContent() {
 fun AuthFooter() = ChildStateful<LoginViewModel> {
 
     Column {
-        Button(
-            onClick = {execUiIntent(UiIntent.OnLoginClick)},
+        RFButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
-                .padding(horizontal = 24.dp)
-        ) {
-            Text(text = stringResource(R.string.login))
-        }
+                .padding(horizontal = 24.dp),
+            text = stringResource(R.string.login),
+            onClick = { execUiIntent(UiIntent.OnLoginClick) }
+        )
     }
 }
 
@@ -153,22 +149,38 @@ fun AuthBody() = ChildStateful<LoginViewModel> {
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = stringResource(R.string.welcome_flotas))
+        RFText(
+            text = stringResource(R.string.welcome_flotas), textStyle = RFTextStyle.Roboto(
+                color = RFColor.UxComponentColorDarkOrange,
+                fontSize = 28.sp
+            )
+        )
         ReusableSpacerVertical(24.dp)
-        Text(text = stringResource(R.string.email), modifier = Modifier.align(Alignment.Start))
+        RFText(
+            text = stringResource(R.string.email), textStyle = RFTextStyle.Roboto(
+                fontSize = 12.sp,
+                color = RFColor.UxComponentColorCharcoal
+            ), modifier = Modifier.align(Alignment.Start)
+        )
         ReusableSpacerVertical(4.dp)
         EmailTextField(
             uiState = uiState,
             onEmailChanged = { execUiIntent(UiIntent.OnEmailChanged(it)) },
             onClearEmail = { execUiIntent(UiIntent.OnClearEmailClick) }
-            )
+        )
         ReusableSpacerVertical(24.dp)
-        Text(text = stringResource(R.string.password), modifier = Modifier.align(Alignment.Start))
+        RFText(
+            text = stringResource(R.string.password),
+            textStyle = RFTextStyle.Roboto(
+                fontSize = 12.sp,
+                color = RFColor.UxComponentColorCharcoal
+            ), modifier = Modifier.align(Alignment.Start)
+        )
         ReusableSpacerVertical(4.dp)
         PasswordTextField(
             uiState = uiState,
-            onPasswordChanged = {execUiIntent(UiIntent.OnPasswordChanged(it))},
-            onClearPassword = {execUiIntent(UiIntent.OnClearPasswordClick)},
+            onPasswordChanged = { execUiIntent(UiIntent.OnPasswordChanged(it)) },
+            onClearPassword = { execUiIntent(UiIntent.OnClearPasswordClick) },
             togglePassword = { execUiIntent(UiIntent.OnTogglePasswordVisibility) }
         )
         ReusableSpacerVertical(4.dp)
@@ -184,10 +196,12 @@ fun ForgotPassword(modifier: Modifier) {
         },
         modifier = modifier
     ) {
-        Text(
+        RFText(
             text = stringResource(R.string.forgotPassword),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
+            textStyle = RFTextStyle.Roboto(
+                fontSize = 12.sp,
+                color = RFColor.UxComponentColorEasternBlue
+            )
         )
     }
 }
@@ -205,7 +219,11 @@ fun PasswordTextField(
         value = uiState.password,
         onValueChange = onPasswordChanged,
         placeholder = {
-            Text(text = stringResource(R.string.placeholder_password))
+            RFText(text = stringResource(R.string.placeholder_password),
+                textStyle = RFTextStyle.Roboto(
+                    fontSize = 16.sp,
+                    color = RFColor.UxComponentColorDarkGray
+                ))
         },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -214,17 +232,15 @@ fun PasswordTextField(
             val icon =
                 if (uiState.isPasswordVisibility) R.drawable.ic_show_password else R.drawable.ic_hide_password
             Row {
-                IconButton(onClick =  onClearPassword ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_clear),
-                        contentDescription = stringResource(R.string.content_description_clear)
+                IconButton(onClick = onClearPassword) {
+                    RFIcon(
+                        painter = painterResource(R.drawable.ic_clear)
                     )
                 }
 
                 IconButton(onClick = togglePassword) {
-                    Icon(
-                        painter = painterResource(id = icon),
-                        contentDescription = null,
+                    RFIcon(
+                        painter = painterResource(id = icon)
                     )
                 }
             }
@@ -246,17 +262,20 @@ fun EmailTextField(
     Column(Modifier.fillMaxWidth()) {
         OutlinedTextField(
             value = uiState.email,
-            onValueChange =  onEmailChanged  ,
+            onValueChange = onEmailChanged,
             placeholder = {
-                Text(text = stringResource(R.string.placeholder_email))
+                RFText(text = stringResource(R.string.placeholder_email),
+                    textStyle = RFTextStyle.Roboto(
+                        fontSize = 16.sp,
+                        color = RFColor.UxComponentColorDarkGray
+                    ))
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             trailingIcon = {
                 IconButton(onClick = onClearEmail) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_clear),
-                        contentDescription = stringResource(R.string.content_description_clear)
+                    RFIcon(
+                        painter = painterResource(R.drawable.ic_clear)
                     )
                 }
             },
@@ -278,10 +297,10 @@ fun EmailTextField(
 
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DefaultLoginScreenPreview() {
-    /*ScreenPreview(uiState = UiState()) {
+    ScreenPreview(uiState = LoginUiState()) {
         LoginScreen()
-    }*/
+    }
 }

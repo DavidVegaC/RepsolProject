@@ -16,6 +16,7 @@ dependencies {
 
     implementation(project(":rf-core-domain"))
     implementation(project(":rf-core-platform"))
+    implementation(project(":rf-components"))
     implementation(project(":rf-core-ui"))
     implementation(project(":railway"))
     implementation((project(":rf-assets")))

@@ -12,13 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,13 +27,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.repsol.auth.data.model.OnboardingPage
 import com.repsol.auth.ui.AuthGraph
 import com.repsol.auth.ui.onboarding.interactor.OnboardingUiState
+import com.repsol.components.button.RFButton
+import com.repsol.components.style.RFColor
+import com.repsol.components.style.RFTextStyle
+import com.repsol.components.text.RFText
+import com.repsol.core_ui.stateful.ScreenPreview
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.navigation.core.localNavController
 import com.repsol.rf_assets.R
@@ -135,16 +137,14 @@ fun OnboardingContent(
     }
 
     if (isLastPage) {
-        Button(
-            onClick = onStart,
-            modifier = modifier
-                .fillMaxWidth()
+        RFButton(
+            modifier = modifier.fillMaxWidth()
                 .height(48.dp)
                 .padding(horizontal = 24.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text(text = stringResource(R.string.start))
-        }
+            text = stringResource(R.string.start),
+            onClick = onStart
+        )
+
     } else {
         Row(
             modifier = modifier
@@ -156,24 +156,26 @@ fun OnboardingContent(
             TextButton(
                 onClick = onSkip,
                 modifier = modifier
-                    .wrapContentWidth()
+                    .fillMaxWidth()
+                    .weight(1f)
                     .height(48.dp)
                     .padding(start = 24.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text(text = stringResource(R.string.skip))
+                RFText(text = stringResource(R.string.skip),
+                    textStyle = RFTextStyle.Roboto(
+                        fontSize = 16.sp
+                    ))
             }
 
-            Button(
-                onClick = onNext,
-                modifier = modifier
-                    .wrapContentWidth()
+            RFButton(
+                modifier = modifier.fillMaxWidth()
+                    .weight(1f)
                     .height(48.dp)
-                    .padding(end = 24.dp),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text(text = stringResource(R.string.next))
-            }
+                    .padding(horizontal = 24.dp),
+                text = stringResource(R.string.next),
+                onClick = onNext
+            )
 
         }
     }
@@ -188,9 +190,12 @@ fun OnboardingPageContent(onboardingPage: OnboardingPage) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(
+        RFText(
             text = stringResource(onboardingPage.titleRes),
-            style = TextStyle(fontSize = 28.sp, color = Color(0xFFFF6200)),
+            textStyle = RFTextStyle.Repsol(
+                color = RFColor.UxComponentColorSafetyOrange,
+                fontSize = 28.sp
+            ),
             textAlign = TextAlign.Center
         )
 
@@ -203,9 +208,12 @@ fun OnboardingPageContent(onboardingPage: OnboardingPage) {
 
         ReusableSpacerVertical(24.dp)
 
-        Text(
+        RFText(
             text = stringResource(onboardingPage.descriptionRes),
-            style = TextStyle(fontSize = 24.sp), color = Color(0xFF757575),
+            textStyle = RFTextStyle.Roboto(
+                color = RFColor.UxComponentColorGrey,
+                fontSize = 14.sp
+            ),
             textAlign = TextAlign.Center
         )
 
@@ -219,5 +227,23 @@ fun OnboardingLogo(modifier: Modifier) {
         R.drawable.ic_logo_repsol,
         stringResource(R.string.onboarding_content_description_logo)
     )
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewOnboarding(){
+    ScreenPreview(
+        uiState = OnboardingUiState(
+            pages = listOf(
+                OnboardingPage(
+                    titleRes = R.string.onboarding_welcome,
+                    descriptionRes = R.string.onboarding_welcome_description,
+                    imageRes = R.drawable.ic_rocket
+                )
+            )
+        )
+    ) {
+        OnboardingScreen()
+    }
 }
 
