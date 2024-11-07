@@ -124,7 +124,7 @@ fun OnboardingContent(
     ) {
         repeat(pagerState.pageCount) { iteration ->
             val color =
-                if (pagerState.currentPage == iteration) Color(0xFFFF6200) else Color(0xFFF2F2F2)
+                if (pagerState.currentPage == iteration) RFColor.UxComponentColorSafetyOrange.color else RFColor.UxComponentColorWhite.color
             Box(
                 modifier = modifier
                     .padding(2.dp)

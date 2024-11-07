@@ -15,5 +15,6 @@ dependencies {
     implementation(project(":rf-core-data"))
     implementation(project(":rf-core-platform"))
     implementation(project(":rf-core-ui"))
+    implementation(project(":rf-assets"))
     implementation(project(":rf-navigation"))
 }
