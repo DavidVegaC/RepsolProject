@@ -20,7 +20,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -244,7 +243,7 @@ fun PasswordTextField(
             visualTransformation = if (uiState.isPasswordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val icon =
-                    if (uiState.isPasswordVisibility) R.drawable.ic_show_password else R.drawable.ic_hide_password
+                    if (uiState.isPasswordVisibility) R.drawable.ic_eye_open else R.drawable.ic_eye_close
                 Row {
                     if (isFocused) {
                         IconButton(onClick = onClearPassword) {

@@ -87,7 +87,7 @@ enum class DrawerOnlyContent {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() = Stateful<HomeViewModel> {
+fun DashboardManagerScreen() = Stateful<HomeViewModel> {
     val uiState by uiState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -495,7 +495,7 @@ fun NavigationHost(
     paddingValues: PaddingValues
 ) { // cada composable seria un submodulo
     NavHost(navController = navController, startDestination = "inicio") {
-        composable("inicio") { HomeScreen(Modifier.padding(paddingValues)) }
+        composable("inicio") { HomeManagerScreen(Modifier.padding(paddingValues)) }
         composable("vehiculos") { VehiculosScreen(Modifier.padding(paddingValues)) }
         composable("tarjetas") { TarjetasScreen(Modifier.padding(paddingValues)) }
         composable("conductores") { ConductoresScreen(Modifier.padding(paddingValues)) }
@@ -507,17 +507,6 @@ fun NavigationHost(
 }
 
 
-@Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.LightGray)
-            .padding(16.dp)
-    ) {
-        Text("Home Screen")
-    }
-}
 
 @Composable
 fun VehiculosScreen(modifier: Modifier = Modifier) {
@@ -605,7 +594,7 @@ fun ConfiguracionesScreen(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun DefaultHomeScreenPreview() {
+fun DefaultDashboardManagerScreenPreview() {
     ScreenPreview(
         uiState = UiState(
             movies = listOf(
@@ -628,6 +617,6 @@ fun DefaultHomeScreenPreview() {
             )
         )
     ) {
-        HomeScreen()
+
     }
 }
