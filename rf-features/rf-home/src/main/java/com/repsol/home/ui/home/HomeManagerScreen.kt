@@ -47,6 +47,8 @@ import com.repsol.tools.utils.CurrencyFormatter
 
 @Composable
 fun HomeManagerScreen(modifier: Modifier = Modifier) {
+
+    val isErorDatosCredit = false // mockEscenario
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -71,7 +73,12 @@ fun HomeManagerScreen(modifier: Modifier = Modifier) {
             }
 
             item {
-                CreditInfoSection()
+                if (isErorDatosCredit) {
+                    CreditInfoSectionError()
+                } else {
+                    CreditInfoSection()
+                }
+
             }
 
             item {
@@ -91,9 +98,10 @@ fun DownloadAllPrices() {
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
-        RFButton(modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp),
+        RFButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
             text = stringResource(R.string.download_all_prices),
             onClick = {},
             icon = {
@@ -203,6 +211,7 @@ fun CreditInfoSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(300.dp)
             .background(RFColor.UxComponentColorWhite.color, shape = RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
@@ -213,6 +222,39 @@ fun CreditInfoSection() {
             ReusableSpacer(16.dp)
             DebtWarning()
         }
+    }
+}
+
+@Composable
+fun CreditInfoSectionError() {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .heightIn(300.dp)
+            .background(RFColor.UxComponentColorWhite.color, shape = RoundedCornerShape(16.dp))
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+
+        Column {
+            DisplayImage(
+                Modifier.fillMaxWidth(),
+                R.drawable.image_home_error,
+
+                )
+
+            ReusableSpacer(24.dp)
+
+            RFText(
+                text = stringResource(R.string.view_not_available_at_this_time),
+                textStyle = RFTextStyle.Roboto(
+                    fontSize = 12.sp,
+                    color = RFColor.UxComponentColorDarkOrange
+                ),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
+
     }
 }
 
