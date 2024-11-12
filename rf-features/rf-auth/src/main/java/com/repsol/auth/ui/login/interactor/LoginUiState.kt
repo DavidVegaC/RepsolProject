@@ -8,4 +8,9 @@ data class LoginUiState(
     val emailError: String? = null,
     val passwordError: String? = null,
     val isPasswordVisibility: Boolean = false
-): UiState
+): UiState {
+
+    companion object {
+        const val IS_ONBOARDED = "IS_ONBOARDED"
+    }
+}

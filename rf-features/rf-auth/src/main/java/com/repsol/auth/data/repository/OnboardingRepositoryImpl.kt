@@ -2,12 +2,14 @@ package com.repsol.auth.data.repository
 
 import com.repsol.auth.data.model.OnboardingPage
 import com.repsol.auth.domain.repository.OnboardingRepository
+import com.repsol.auth.ui.login.interactor.LoginUiState.Companion.IS_ONBOARDED
+import com.repsol.core_domain.storage.LocalStorage
 import com.repsol.rf_assets.R
 import javax.inject.Inject
 
 class OnboardingRepositoryImpl @Inject constructor(): OnboardingRepository {
 
-    override fun getOnboardingPages(): List<OnboardingPage> {
+    override suspend fun getOnboardingPages(): List<OnboardingPage> {
         return listOf(
             OnboardingPage(
                 titleRes = R.string.onboarding_welcome,
@@ -30,5 +32,9 @@ class OnboardingRepositoryImpl @Inject constructor(): OnboardingRepository {
                 imageRes = R.drawable.ic_world
             )
         )
+    }
+
+    override suspend fun changeValueOnboarded() {
+        LocalStorage.setBoolean(IS_ONBOARDED, true)
     }
 }

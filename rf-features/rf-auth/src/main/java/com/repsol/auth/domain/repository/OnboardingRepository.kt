@@ -4,5 +4,7 @@ import com.repsol.auth.data.model.OnboardingPage
 
 interface OnboardingRepository {
 
-    fun getOnboardingPages(): List<OnboardingPage>
+    suspend fun getOnboardingPages(): List<OnboardingPage>
+
+    suspend fun changeValueOnboarded()
 }

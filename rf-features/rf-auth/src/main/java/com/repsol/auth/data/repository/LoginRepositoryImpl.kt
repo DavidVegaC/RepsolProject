@@ -5,7 +5,7 @@ import com.gigya.android.sdk.GigyaLoginCallback
 import com.gigya.android.sdk.account.models.GigyaAccount
 import com.gigya.android.sdk.network.GigyaError
 import com.repsol.auth.domain.entity.Profile
-import com.repsol.auth.domain.mapper.LoginMapper.toProfile
+import com.repsol.auth.data.mapper.LoginMapper.toProfile
 import com.repsol.auth.domain.repository.LoginRepository
 import com.repsol.core_domain.common.error.GlobalError
 import com.repsol.railway.Output
