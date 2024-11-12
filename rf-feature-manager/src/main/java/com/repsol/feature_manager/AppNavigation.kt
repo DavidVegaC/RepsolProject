@@ -1,4 +1,4 @@
-package com.repsol.flotas.ui
+package com.repsol.feature_manager
 
 import androidx.compose.runtime.Composable
 import com.repsol.auth.ui.authNavigation
@@ -12,6 +12,6 @@ fun MainNavigation() {
         startDestination = MainGraph.AuthModule
     ) {
         authNavigation()
-        homeNavigation()
+        managerHomeNavigation()
     }
 }

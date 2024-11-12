@@ -1,4 +1,5 @@
 import core.api
+import core.implementation
 
 plugins {
     alias(libs.plugins.android.application.convention)
@@ -14,8 +15,8 @@ klean {
 
 dependencies {
     implementation(libs.gigya.sdk.core)
-    api(project(":rf-features:rf-auth"))
-    api(project(":rf-features:rf-home"))
-    implementation(project(":rf-core-ui"))
-    implementation(project(":rf-core-data"))
+
+    api(project(":rf-feature-manager"))
+    api(project(":rf-core-ui"))
+    api(project(":rf-core-data"))
 }

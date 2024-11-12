@@ -1,3 +1,5 @@
+import core.api
+
 plugins {
     alias(libs.plugins.android.library.convention)
     alias(libs.plugins.kotlin.compose)
@@ -12,4 +14,7 @@ klean {
 
 dependencies {
     api(project(":rf-navigation"))
+
+    api(project(":rf-features:rf-auth"))
+    api(project(":rf-features:rf-home"))
 }
