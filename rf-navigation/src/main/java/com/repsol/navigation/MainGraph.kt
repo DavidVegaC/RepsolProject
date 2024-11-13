@@ -8,5 +8,8 @@ object MainGraph {
     object AuthModule
 
     @Serializable
+    object GestorDashboardModule
+
+    @Serializable
     object HomeModule
 }

@@ -2,7 +2,7 @@ package com.repsol.feature_manager
 
 import androidx.compose.runtime.Composable
 import com.repsol.auth.ui.authNavigation
-import com.repsol.home.ui.homeNavigation
+import com.repsol.gestor_dashboard.ui.gestorDashboardNavigation
 import com.repsol.navigation.MainGraph
 import com.repsol.navigation.core.NavHost
 
@@ -12,6 +12,6 @@ fun MainNavigation() {
         startDestination = MainGraph.AuthModule
     ) {
         authNavigation()
-        managerHomeNavigation()
+        gestorDashboardNavigation()
     }
 }

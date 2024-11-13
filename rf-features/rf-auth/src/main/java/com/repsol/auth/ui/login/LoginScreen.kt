@@ -61,7 +61,7 @@ fun LoginScreen() = Stateful<LoginViewModel> {
     OnUiEvent {
         when (it) {
             is UiEvent.GoToHome -> {
-                navController.navigate(MainGraph.HomeModule)
+                navController.navigate(MainGraph.GestorDashboardModule)
             }
         }
     }
