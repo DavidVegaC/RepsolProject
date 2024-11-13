@@ -11,5 +11,8 @@ object MainGraph {
     object GestorDashboardModule
 
     @Serializable
+    object DriverDashboardModule
+
+    @Serializable
     object HomeModule
 }

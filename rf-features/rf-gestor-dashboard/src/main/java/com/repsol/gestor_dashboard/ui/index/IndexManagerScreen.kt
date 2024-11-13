@@ -40,14 +40,14 @@ import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
 import com.repsol.components.utils.conditionalModifier
 import com.repsol.components.utils.setGone
+import com.repsol.core_ui.stateful.Stateful
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
 import com.repsol.tools.components.ReusableSpacer
 import com.repsol.tools.utils.CurrencyFormatter
 
 @Composable
-fun IndexManagerScreen(modifier: Modifier = Modifier) {
-
+fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerViewModel> {
     val isErorDatosCredit = false // mockEscenario
     Box(
         modifier = modifier
@@ -449,7 +449,6 @@ fun CreditContentTextAndGraph() {
     }
 
 }
-
 
 @Composable
 fun HeaderHomeSection() {

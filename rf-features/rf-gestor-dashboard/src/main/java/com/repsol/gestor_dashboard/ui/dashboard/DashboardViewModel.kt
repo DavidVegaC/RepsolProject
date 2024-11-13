@@ -1,15 +1,14 @@
-package com.repsol.gestor_dashboard.ui.home
+package com.repsol.gestor_dashboard.ui.dashboard
 
 import androidx.lifecycle.SavedStateHandle
 import com.repsol.core_platform.CoreViewModel
-import com.repsol.gestor_dashboard.ui.home.interactor.BottomBarContent
-import com.repsol.gestor_dashboard.ui.home.interactor.DrawerOnlyContent
-import com.repsol.gestor_dashboard.ui.home.interactor.HomeUiIntent
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.BottomBarContent
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.DrawerOnlyContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import com.repsol.gestor_dashboard.ui.home.interactor.HomeUiEvent as UiEvent
-import com.repsol.gestor_dashboard.ui.home.interactor.HomeUiIntent as UiIntent
-import com.repsol.gestor_dashboard.ui.home.interactor.HomeUiState as UiState
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiEvent as UiEvent
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiIntent as UiIntent
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiState as UiState
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(

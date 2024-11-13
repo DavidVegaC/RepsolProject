@@ -1,4 +1,4 @@
-package com.repsol.gestor_dashboard.ui.home
+package com.repsol.gestor_dashboard.ui.dashboard
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -62,26 +61,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.ScreenPreview
 import com.repsol.core_ui.stateful.Stateful
-import com.repsol.gestor_dashboard.ui.home.interactor.BottomBarContent
-import com.repsol.gestor_dashboard.ui.home.interactor.DrawerOnlyContent
-import com.repsol.gestor_dashboard.ui.index.IndexManagerScreen
-import com.repsol.gestor_dashboard.ui.vehicle.VehicleScreen
+import com.repsol.gestor_dashboard.ui.NavigationHost
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.BottomBarContent
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.DrawerOnlyContent
 import com.repsol.rf_assets.R
 import kotlinx.coroutines.launch
-import com.repsol.gestor_dashboard.ui.home.interactor.HomeUiEvent as UiEvent
-import com.repsol.gestor_dashboard.ui.home.interactor.HomeUiIntent as UiIntent
-import com.repsol.gestor_dashboard.ui.home.interactor.HomeUiState as UiState
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiEvent as UiEvent
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiIntent as UiIntent
+import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiState as UiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardManagerScreen() = Stateful<DashboardViewModel> {
+fun GestorDashboardScreen() = Stateful<DashboardViewModel> {
     val uiState by uiState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -431,23 +426,6 @@ fun DrawerOption(
             color = textColor,
             style = MaterialTheme.typography.bodyMedium
         )
-    }
-}
-
-@Composable
-fun NavigationHost(
-    navController: NavHostController,
-    paddingValues: PaddingValues
-) { // cada composable seria un submodulo
-    NavHost(navController = navController, startDestination = "inicio") {
-        composable("inicio") { IndexManagerScreen(Modifier.padding(paddingValues)) }
-        composable("vehiculos") { VehicleScreen(Modifier.padding(paddingValues)) }
-        composable("tarjetas") { TarjetasScreen(Modifier.padding(paddingValues)) }
-        composable("conductores") { ConductoresScreen(Modifier.padding(paddingValues)) }
-        composable("tracking") { TrackingScreen(Modifier.padding(paddingValues)) }
-        composable("reportes") { ReportesScreen(Modifier.padding(paddingValues)) }
-        composable("medios_pago") { MediosPagoScreen(Modifier.padding(paddingValues)) }
-        composable("configuracion") { ConfiguracionesScreen(Modifier.padding(paddingValues)) }
     }
 }
 

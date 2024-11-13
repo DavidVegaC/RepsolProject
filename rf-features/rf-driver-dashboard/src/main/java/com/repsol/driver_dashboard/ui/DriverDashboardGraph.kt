@@ -1,15 +1,12 @@
-package com.repsol.gestor_dashboard.ui
+package com.repsol.driver_dashboard.ui
 
 import kotlinx.serialization.Serializable
 
-object ManagerDashboardGraph {
+object DriverDashboardGraph {
 
     @Serializable
     object Dashboard
 
     @Serializable
     object Index
-
-    @Serializable
-    object Vehicles
 }

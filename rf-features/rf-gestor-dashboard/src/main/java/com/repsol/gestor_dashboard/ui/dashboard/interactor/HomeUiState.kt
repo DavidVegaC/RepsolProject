@@ -1,4 +1,4 @@
-package com.repsol.gestor_dashboard.ui.home.interactor
+package com.repsol.gestor_dashboard.ui.dashboard.interactor
 
 import com.repsol.core_platform.handler.UiState
 

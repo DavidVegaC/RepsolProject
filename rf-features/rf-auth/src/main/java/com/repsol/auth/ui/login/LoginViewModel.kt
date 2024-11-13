@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(
         val validate = ValidateLoginParams(uiState.email, uiState.password)
         when (validateLoginUseCase(validate)) {
             is ValidateLoginResult.Success -> {
-                UiEvent.GoToHome.send()
+                UiEvent.GoToDriverDashboard.send()
             }
             is ValidateLoginResult.Error -> {
             }

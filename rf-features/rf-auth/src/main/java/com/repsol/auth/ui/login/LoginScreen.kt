@@ -60,8 +60,11 @@ fun LoginScreen() = Stateful<LoginViewModel> {
     val navController = localNavController()
     OnUiEvent {
         when (it) {
-            is UiEvent.GoToHome -> {
+            is UiEvent.GoToGestorDashboard -> {
                 navController.navigate(MainGraph.GestorDashboardModule)
+            }
+            is UiEvent.GoToDriverDashboard -> {
+                navController.navigate(MainGraph.DriverDashboardModule)
             }
         }
     }
