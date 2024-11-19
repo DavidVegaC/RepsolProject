@@ -406,7 +406,7 @@ fun DriverCardDetails() {
                                 .heightIn(24.dp)
                                 .widthIn(32.dp)
                                 .background(
-                                    RFColor.UxComponentColorDarkCyan.color,
+                                    RFColor.UxComponentColorGreen.color,
                                     shape = RoundedCornerShape(4.dp)
                                 ),
                             contentAlignment = Alignment.Center

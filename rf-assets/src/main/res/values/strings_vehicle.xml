@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_vehicle">Mis Vehículos</string>
+    <string name="active">Activas</string>
+    <string name="low">De baja</string>
+    <string name="total">Total</string>
+    <string name="list_general">Listado General</string>
+    <string name="search">Buscar por placa</string>
+</resources>

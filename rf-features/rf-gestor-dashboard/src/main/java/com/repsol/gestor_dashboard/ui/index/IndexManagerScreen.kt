@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,8 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,38 +58,57 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
             .background(RFColor.UxComponentColorWhiteSmoke.color)
     ) {
 
-        Image(
-            painter = painterResource(R.drawable.content_eclipse_gradient),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth()
-        )
-
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                HeaderHomeSection()
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(500.dp)
+                        .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    RFColor.UxComponentColorMidnightBlue.color,
+                                    RFColor.UxComponentColorCerulean.color,
+                                    RFColor.UxComponentColorCGBlue.color
+                                )
+                            )
+                        )
+                ) {
+                    Column(
+                        Modifier.padding(horizontal = 16.dp)
+                    ) {
+                        HeaderHomeSection()
+                        ReusableSpacer(16.dp)
+                        if (isErorDatosCredit) {
+                            CreditInfoSectionError()
+                        } else {
+                            CreditInfoSection()
+                        }
+                    }
+                }
             }
-
             item {
-                if (isErorDatosCredit) {
-                    CreditInfoSectionError()
-                } else {
-                    CreditInfoSection()
+                Box(
+                    Modifier.layout{ measurable, constraints ->
+                        val placeable = measurable.measure(constraints)
+                        layout(placeable.width, placeable.height -110.dp.roundToPx()) {
+                            placeable.placeRelative(0,-110.dp.roundToPx())
+                        }
+                    }
+                ) {
+
+                    Column(Modifier.fillMaxWidth()) {
+                        OptionHomeManager()
+                        DownloadAllPrices()
+                    }
+
                 }
 
-            }
-
-            item {
-                OptionHomeManager()
-            }
-
-            item {
-                DownloadAllPrices()
             }
         }
     }
@@ -95,7 +117,8 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
 @Composable
 fun DownloadAllPrices() {
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .padding(vertical = 24.dp, horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
         RFButton(
@@ -110,7 +133,7 @@ fun DownloadAllPrices() {
                     tint = RFColor.UxComponentColorWhite
                 )
             },
-            rfShape = RFButtonShape.Round
+            rfShape = RFButtonShape.Regular
         )
     }
 }
@@ -126,7 +149,7 @@ fun OptionHomeManager() {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = 8.dp)
+        modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         RFIcon(
             painter = painterResource(R.drawable.ic_save),
@@ -287,7 +310,7 @@ fun DebtWarning() {
             ) {
                 RFIcon(
                     painter = painterResource(R.drawable.ic_danger),
-                    tint = RFColor.UxComponentColorCrimson
+                    tint = RFColor.UxComponentColorRed
                 )
 
                 RFText(
@@ -499,7 +522,7 @@ fun HeaderHomeSection() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun DefaultHomeScreenPreview() {
     IndexManagerScreen()

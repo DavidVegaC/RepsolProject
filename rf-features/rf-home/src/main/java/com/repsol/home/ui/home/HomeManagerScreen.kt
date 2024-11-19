@@ -287,7 +287,7 @@ fun DebtWarning() {
             ) {
                 RFIcon(
                     painter = painterResource(R.drawable.ic_danger),
-                    tint = RFColor.UxComponentColorCrimson
+                    tint = RFColor.UxComponentColorRed
                 )
 
                 RFText(

@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="welcome_user">Hola, %s</string>
+    <string name="flotas">Flotas</string>
+    <string name="start_dashboard">Inicio</string>
+    <string name="vehicles_dashboard">Vehículos</string>
+    <string name="cards_dashboard">Tarjetas</string>
+    <string name="driver_dashboard">Conductores</string>
+    <string name="tracking_menu">Tracking</string>
+    <string name="report_menu">Reportes</string>
+    <string name="pay_menu">Medios de pago</string>
+    <string name="settings_menu">Configuración</string>
+    <string name="logout_menu">Cerrar sesión</string>
+    <string name="menu_dashboard">Más</string>
     <string name="approved_line">Línea aprobada</string>
     <string name="deadline">Crédito a 15 días</string>
     <string name="debtWarning">Tienes una deuda vencida</string>
