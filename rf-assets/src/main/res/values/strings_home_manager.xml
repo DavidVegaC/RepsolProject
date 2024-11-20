@@ -13,6 +13,8 @@
     <string name="logout_menu">Cerrar sesión</string>
     <string name="menu_dashboard">Más</string>
     <string name="approved_line">Línea aprobada</string>
+    <string name="available_balance">Saldo disponible</string>
+    <string name="business_goal">Avance meta comercial</string>
     <string name="deadline">Crédito a 15 días</string>
     <string name="debtWarning">Tienes una deuda vencida</string>
     <string name="what_do_you_want_to_do">¿Qué deseas hacer?</string>

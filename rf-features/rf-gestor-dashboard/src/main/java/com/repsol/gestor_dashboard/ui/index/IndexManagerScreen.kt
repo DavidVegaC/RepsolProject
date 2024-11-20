@@ -43,6 +43,7 @@ import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
 import com.repsol.components.utils.conditionalModifier
 import com.repsol.components.utils.setGone
+import com.repsol.core_domain.storage.SessionStorage
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
@@ -401,7 +402,7 @@ fun CreditContentTextAndGraph() {
 
                 Column {
                     RFText(
-                        text = stringResource(R.string.approved_line),
+                        text = stringResource(R.string.available_balance),
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 12.sp,
                             color = RFColor.UxComponentColorCharcoal
@@ -428,7 +429,7 @@ fun CreditContentTextAndGraph() {
                         .width(4.dp)
                         .height(64.dp)
                         .background(
-                            RFColor.UxComponentColorDarkCerulean.color,
+                            RFColor.UxComponentColorIrisBlue.color,
                             shape = RoundedCornerShape(16.dp)
                         )
                 )
@@ -437,7 +438,7 @@ fun CreditContentTextAndGraph() {
 
                 Column {
                     RFText(
-                        text = stringResource(R.string.approved_line),
+                        text = stringResource(R.string.business_goal),
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 12.sp,
                             color = RFColor.UxComponentColorCharcoal
@@ -448,7 +449,7 @@ fun CreditContentTextAndGraph() {
                         text = "81%",
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 18.sp,
-                            color = RFColor.UxComponentColorDarkCerulean
+                            color = RFColor.UxComponentColorIrisBlue
                         )
                     )
                 }

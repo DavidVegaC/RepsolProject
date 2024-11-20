@@ -18,5 +18,4 @@ dependencies {
     api(project(":rf-features:rf-auth"))
     api(project(":rf-features:rf-gestor-dashboard"))
     api(project(":rf-features:rf-driver-dashboard"))
-    api(project(":rf-features:rf-home"))
 }

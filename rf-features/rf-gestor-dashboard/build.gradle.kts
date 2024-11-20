@@ -16,5 +16,6 @@ dependencies {
     api(project(":rf-core-ui"))
     api(project(":rf-components"))
     api(project(":rf-assets"))
+    api(project(":rf-core-domain"))
     api(project(":rf-tools"))
 }
