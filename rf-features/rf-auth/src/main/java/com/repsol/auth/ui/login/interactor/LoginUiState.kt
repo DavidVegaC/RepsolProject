@@ -10,6 +10,9 @@ data class LoginUiState(
     val isPasswordVisibility: Boolean = false
 ): UiState {
 
+    val isButtonEnabled: Boolean
+        get() = email.isNotBlank() && password.isNotBlank() && emailError.isNullOrEmpty() && passwordError.isNullOrEmpty()
+
     companion object {
         const val IS_ONBOARDED = "IS_ONBOARDED"
     }

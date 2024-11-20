@@ -299,7 +299,7 @@ fun DebtWarning() {
                 )
 
                 RFIcon(
-                    painter = painterResource(R.drawable.ic_eye_open),
+                    painter = painterResource(R.drawable.ic_show_password),
                     tint = RFColor.UxComponentColorCharcoal
                 )
             }

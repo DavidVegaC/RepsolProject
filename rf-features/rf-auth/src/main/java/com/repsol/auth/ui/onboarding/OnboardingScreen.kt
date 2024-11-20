@@ -16,7 +16,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,7 +43,7 @@ import com.repsol.core_ui.stateful.Stateful
 import com.repsol.navigation.core.localNavController
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
-import com.repsol.tools.components.ReusableSpacerVertical
+import com.repsol.tools.components.ReusableSpacer
 import com.repsol.auth.ui.onboarding.interactor.OnboardingUiEvent as UiEvent
 import com.repsol.auth.ui.onboarding.interactor.OnboardingUiIntent as UiIntent
 
@@ -200,14 +199,14 @@ fun OnboardingPageContent(onboardingPage: OnboardingPage) {
             textAlign = TextAlign.Center
         )
 
-        ReusableSpacerVertical(24.dp)
+        ReusableSpacer(24.dp)
 
         Image(
             painter = painterResource(onboardingPage.imageRes),
             contentDescription = stringResource(R.string.onboarding_content_description_carousel)
         )
 
-        ReusableSpacerVertical(24.dp)
+        ReusableSpacer(24.dp)
 
         RFText(
             text = stringResource(onboardingPage.descriptionRes),

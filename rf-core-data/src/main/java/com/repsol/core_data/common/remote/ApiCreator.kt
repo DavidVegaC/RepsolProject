@@ -18,17 +18,12 @@ class ApiCreator @Inject constructor() {
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
-            .addInterceptor {
-                val request = it.request().newBuilder()
-                    .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2OGNmZmY1MzBkMTIyZDc0Mjk5YTliNzcwMjlhNWZkZCIsIm5iZiI6MTcyNjQyNDI1OC4wNjY2MzMsInN1YiI6IjY2ZTcxZmYzMzc2OGE3M2Y4ZDkxNzk1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P_-iAb0cIUTEjaVnWpKNDch-K6qvEgHLfVmklmgKxNM")
-                    .build()
-                it.proceed(request)
-            }
             .build()
+        val json = Json { ignoreUnknownKeys = true }
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl("https://preproduccion.everilion.com/IlionServices4/RepsolPeru_API/Flotas/api/")
             .client(client)
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
         return retrofit.create(service.java)
     }

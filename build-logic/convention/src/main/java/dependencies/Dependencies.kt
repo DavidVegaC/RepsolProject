@@ -85,6 +85,7 @@ fun Project.addNetworkDependencies(){
         implementation(libs["retrofit-serialization"])
         implementation(libs["retrofit-logging"])
         implementation(libs["okhttp"])
+        implementation(libs["google-gson"])
     }
 }
 
@@ -97,7 +98,6 @@ fun Project.addUiDependencies(){
     addAndroidTestDependencies()
     addComposeTestDependencies()
     dependencies {
-        implementation(libs["google-gson"])
         implementation(libs["coil"])
         implementation(libs["coil-network-okhttp"])
     }

@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.gigya.sdk.core)
 
     implementation(project(":rf-core-domain"))
+    implementation(project(":rf-core-data"))
     implementation(project(":rf-core-platform"))
     implementation(project(":rf-components"))
     implementation(project(":rf-core-ui"))

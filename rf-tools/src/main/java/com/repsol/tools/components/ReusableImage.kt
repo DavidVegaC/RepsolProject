@@ -10,7 +10,7 @@ import androidx.compose.ui.res.painterResource
 fun DisplayImage(
     modifier: Modifier = Modifier,
     @DrawableRes drawableRes: Int,
-    contentDescription: String
+    contentDescription: String? = null
 ) {
     Image(
         painter = painterResource(drawableRes),
