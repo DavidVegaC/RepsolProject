@@ -14,28 +14,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
@@ -43,61 +35,62 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.repsol.components.button.RFButton
-import com.repsol.components.button.style.RFButtonShape
 import com.repsol.components.card.RFCard
+import com.repsol.components.filterspinner.FilterSpinner
 import com.repsol.components.icon.RFIcon
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
-import com.repsol.gestor_dashboard.ui.index.CreditInfoSection
-import com.repsol.gestor_dashboard.ui.index.CreditInfoSectionError
-import com.repsol.gestor_dashboard.ui.index.DownloadAllPrices
-import com.repsol.gestor_dashboard.ui.index.HeaderHomeSection
-import com.repsol.gestor_dashboard.ui.index.IndexManagerScreen
-import com.repsol.gestor_dashboard.ui.index.OptionHomeManager
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.ReusableSpacer
-import com.repsol.tools.utils.CurrencyFormatter
 
 @Composable
 fun VehicleScreen(modifier: Modifier = Modifier) {
+
+    val list = listOf(
+        "Elemento1", "Elemento2",
+        "Elemento3", "Elemento4",
+        "Elemento5"
+    )
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(RFColor.UxComponentColorWhiteSmoke.color)
     ) {
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(300.dp)
-                .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            RFColor.UxComponentColorMidnightBlue.color,
-                            RFColor.UxComponentColorCerulean.color,
-                            RFColor.UxComponentColorCGBlue.color
-                        )
-                    )
-                )
-        )
-
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            item {
-                HeaderSection()
-            }
 
             item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(300.dp)
+                        .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    RFColor.UxComponentColorMidnightBlue.color,
+                                    RFColor.UxComponentColorCerulean.color,
+                                    RFColor.UxComponentColorCGBlue.color
+                                )
+                            )
+                        )
+                ) {
+                    Column(Modifier.padding(16.dp)) {
+                        HeaderSection()
+                    }
+                }
+
+                ReusableSpacer(24.dp)
                 FilterSection()
                 Row(
-                    Modifier.fillMaxWidth(),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -107,8 +100,128 @@ fun VehicleScreen(modifier: Modifier = Modifier) {
                 }
 
             }
+
+            items(
+                count = list.size,
+                key = { index -> list[index] }
+            ) { index ->
+                ContainerPagination(list[index])
+            }
+
+            item {
+
+            }
+
+        }
+
+    }
+}
+
+@Composable
+private fun ContainerPagination(item: String) {
+
+    Column(Modifier.padding(horizontal = 16.dp)) {
+        RFCard(
+            Modifier
+                .fillMaxWidth()
+                .heightIn(94.dp),
+
+            ) {
+            Column(Modifier.padding(24.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RFText(
+                        text = "Mercedes-Benz",
+                        textStyle = RFTextStyle.Roboto(
+                            fontSize = 16.sp,
+                            color = RFColor.UxComponentColorDarkGray
+                        )
+                    )
+
+                    Box(
+                        Modifier
+                            .heightIn(24.dp)
+                            .widthIn(32.dp)
+                            .background(
+                                RFColor.UxComponentColorGreen.color,
+                                shape = RoundedCornerShape(4.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        RFIcon(
+                            painter = painterResource(R.drawable.ic_camion_filled),
+                            tint = RFColor.UxComponentColorWhite
+                        )
+
+
+                    }
+
+                }
+
+                ReusableSpacer(4.dp)
+
+                Row(
+                    Modifier.fillMaxWidth()
+                ) {
+
+                    RFText(
+                        text = "ZEC-542",
+                        textStyle = RFTextStyle.Roboto(
+                            fontSize = 28.sp,
+                            color = RFColor.UxComponentColorCharcoal
+                        )
+                    )
+
+                    ReusableSpacer(24.dp)
+
+                    Column(Modifier.weight(1f)) {
+                        RFText(
+                            text = "Combustible",
+                            textStyle = RFTextStyle.Roboto(
+                                fontSize = 12.sp,
+                                color = RFColor.UxComponentColorDarkGray
+                            )
+                        )
+
+                        ReusableSpacer(8.dp)
+
+                        RFText(
+                            text = "Regular",
+                            textStyle = RFTextStyle.Roboto(
+                                fontSize = 12.sp,
+                                color = RFColor.UxComponentColorCharcoal
+                            )
+                        )
+                    }
+
+                    RFIcon(
+                        painter = painterResource(R.drawable.ic_arrow_right)
+                    )
+                }
+            }
         }
     }
+}
+
+@Composable
+private fun BackgroundGradient() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(300.dp)
+            .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        RFColor.UxComponentColorMidnightBlue.color,
+                        RFColor.UxComponentColorCerulean.color,
+                        RFColor.UxComponentColorCGBlue.color
+                    )
+                )
+            )
+    )
 }
 
 @Composable
@@ -118,7 +231,10 @@ private fun AdvancedFilters() {
         Modifier
             .widthIn(40.dp)
             .heightIn(40.dp)
-            .background(color = RFColor.UxComponentColorDiamond.color, shape = RoundedCornerShape(20.dp))
+            .background(
+                color = RFColor.UxComponentColorDiamond.color,
+                shape = RoundedCornerShape(20.dp)
+            )
     ) {
         RFIcon(
             painter = painterResource(R.drawable.ic_list),
@@ -134,76 +250,54 @@ private fun FilterComboBox() {
     val options = listOf("Nombre", "Placa", "Estado")
     var selectionOption by remember { mutableStateOf("Ordenar") }
 
-    SortComboBox(
+    FilterSpinner(
+        radius = 24.dp,
+        leadingContent = {
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .background(
+                        color = RFColor.UxComponentColorDiamond.color,
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                RFIcon(
+                    modifier = Modifier.size(16.dp),
+                    painter = painterResource(R.drawable.ic_window),
+                    tint = RFColor.UxComponentColorBlueLagoon
+                )
+            }
+        },
+        trailingContent = {
+            RFIcon(
+                painter = painterResource(R.drawable.ic_arrow_drop_down),
+                tint = RFColor.UxComponentColorBlueLagoon
+            )
+        },
+        clickable = true,
         options = options,
-        selectOption = selectionOption,
-        onSelected = { selectionOption = it }
+        onOptionSelected = { selectionOption = it },
+        textContent = {
+            RFText(
+                text = selectionOption,
+                textStyle = RFTextStyle.Roboto(
+                    fontSize = 14.sp,
+                    color = RFColor.UxComponentColorCharcoal
+                )
+            )
+        }
+
     )
 
 }
 
-@Composable
-private fun SortComboBox(
-    options: List<String>,
-    selectOption: String,
-    onSelected: (String) -> Unit,
-) {
-
-    var expanded by remember { mutableStateOf(false) }
-
-    Box(
-        modifier = Modifier
-            .wrapContentWidth()
-    ) {
-        Button(
-            onClick = { expanded != expanded },
-            shape = RoundedCornerShape(20.dp),
-            colors = ButtonColors(
-                containerColor = Color.White,
-                contentColor = Color.Red,
-                disabledContainerColor = Color.LightGray,
-                disabledContentColor = Color.Gray
-            )
-        ) {
-            RFIcon(
-                painter = painterResource(R.drawable.ic_camion_filled)
-            )
-
-            ReusableSpacer(8.dp)
-
-            RFText(
-                text = selectOption
-            )
-
-            ReusableSpacer(4.dp)
-
-            RFIcon(
-                painter = painterResource(R.drawable.ic_camion_filled)
-            )
-        }
-
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    text = { Text(option) },
-                    onClick = {
-                        onSelected(option)
-                        expanded = false
-                    }
-                )
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FilterSection() {
     var query by remember { mutableStateOf("") }
-    var isAcive by remember { mutableStateOf(false) }
+    var isActive by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -227,9 +321,6 @@ private fun FilterSection() {
                 )
             )
         }
-
-        ReusableSpacer(24.dp)
-
         //se cambiara
         SearchBar(
             placeholder = {
@@ -240,9 +331,9 @@ private fun FilterSection() {
             query = query,
             onQueryChange = { query = it },
             onSearch = { "$query" },
-            active = isAcive,
-            onActiveChange = { isAcive = it }
-        ) { }
+            active = isActive,
+            onActiveChange = { isActive = it }
+        ) {}
 
         ReusableSpacer(24.dp)
 
@@ -301,7 +392,6 @@ private fun HeaderSection() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
 
     ) {
 
@@ -326,7 +416,8 @@ private fun HeaderSection() {
         ReusableSpacer(24.dp)
 
         RFCard(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            clickable = false
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -422,7 +513,6 @@ private fun HeaderSection() {
                         date = "22 de octubre"
                     )
                 }
-
 
             }
         }

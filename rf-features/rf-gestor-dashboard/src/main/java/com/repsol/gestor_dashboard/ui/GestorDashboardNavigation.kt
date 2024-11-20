@@ -16,6 +16,7 @@ import com.repsol.gestor_dashboard.ui.dashboard.MediosPagoScreen
 import com.repsol.gestor_dashboard.ui.dashboard.ReportesScreen
 import com.repsol.gestor_dashboard.ui.dashboard.TarjetasScreen
 import com.repsol.gestor_dashboard.ui.dashboard.TrackingScreen
+import com.repsol.gestor_dashboard.ui.detailvehicle.DetailVehicleScreen
 import com.repsol.gestor_dashboard.ui.index.IndexManagerScreen
 import com.repsol.gestor_dashboard.ui.vehicle.VehicleScreen
 import com.repsol.navigation.MainGraph
