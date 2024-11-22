@@ -104,7 +104,6 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
                         when {
                             uiState.isLoading -> PlaceholderInfoSection()
                             !uiState.errorMessage.isNullOrEmpty() -> CreditInfoSectionError()
-                            uiState.showRetry -> {execUiIntent(UiIntent.OnRetryClick)}
                             else -> CreditInfoSection()
                         }
                     }
@@ -338,11 +337,7 @@ private fun CreditInfoSectionError() = ChildStateful<IndexManagerViewModel> {
     ) {
 
         Column {
-            DisplayImage(
-                Modifier.fillMaxWidth(),
-                R.drawable.image_home_error,
-
-                )
+            DisplayImage(Modifier.fillMaxWidth(), R.drawable.image_home_error)
 
             ReusableSpacer(24.dp)
 
@@ -365,7 +360,7 @@ private fun CreditInfoSectionError() = ChildStateful<IndexManagerViewModel> {
                     color = RFColor.UxComponentColorWhite
                 ),
                 rfShape = RFButtonShape.Round,
-                onClick = {execUiIntent(UiIntent.OnRetryClick)}
+                onClick = { execUiIntent(UiIntent.OnRetryClick) }
             )
         }
 

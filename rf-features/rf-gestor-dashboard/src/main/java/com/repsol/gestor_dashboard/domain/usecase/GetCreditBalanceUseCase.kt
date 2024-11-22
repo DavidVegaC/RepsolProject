@@ -13,8 +13,8 @@ class GetCreditBalanceUseCase @Inject constructor(
 ): SimpleUseCase.OnlyResult<GetCreditBalanceResult> {
 
     override suspend fun invoke(): GetCreditBalanceResult {
-        val clientId: String = SessionStorage.getString(UserSession.ID_CLIENT).orEmpty()
-        //val clientId = "0348117784"
+        //val clientId: String = SessionStorage.getString(UserSession.ID_CLIENT).orEmpty()
+        val clientId = "0348118803"
         return repository.getCreditBalance(clientId).handleResult()
     }
 }

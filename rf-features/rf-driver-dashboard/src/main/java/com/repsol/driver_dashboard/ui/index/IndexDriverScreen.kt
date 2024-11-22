@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +31,8 @@ import com.repsol.components.icon.RFIcon
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
+import com.repsol.core_platform.handler.UiState
+import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
@@ -187,7 +190,10 @@ private fun DriverList() {
 }
 
 @Composable
-private fun DriverCostCenter() {
+private fun DriverCostCenter() = ChildStateful<IndexDriverViewModel> {
+
+    val uiState by uiState()
+
     RFCard(
         Modifier
             .fillMaxWidth()
@@ -216,7 +222,7 @@ private fun DriverCostCenter() {
 
             RFText(
                 modifier = Modifier.fillMaxWidth(),
-                text = "C. C. Administración Oct.",
+                text = uiState.costCenter,
                 textStyle = RFTextStyle.Repsol(
                     fontSize = 28.sp,
                     color = RFColor.UxComponentColorDarkOrange
@@ -228,7 +234,9 @@ private fun DriverCostCenter() {
 }
 
 @Composable
-private fun DriverCardBalanceAndHighDate() {
+private fun DriverCardBalanceAndHighDate() = ChildStateful<IndexDriverViewModel> {
+
+    val uiState by uiState()
     Row(
         Modifier
             .fillMaxSize()
@@ -258,7 +266,7 @@ private fun DriverCardBalanceAndHighDate() {
 
                 RFText(
                     modifier = Modifier.fillMaxWidth(),
-                    text = CurrencyFormatter.formatCurrencyInSoles(374.00),
+                    text = uiState.balanceAmount,
                     textStyle = RFTextStyle.Repsol(
                         fontSize = 28.sp,
                         color = RFColor.UxComponentColorDarkOrange
@@ -288,7 +296,7 @@ private fun DriverCardBalanceAndHighDate() {
 
                 RFText(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "06/07/23",
+                    text = uiState.activationDate,
                     textStyle = RFTextStyle.Repsol(
                         fontSize = 28.sp,
                         color = RFColor.UxComponentColorDarkOrange
@@ -300,7 +308,10 @@ private fun DriverCardBalanceAndHighDate() {
 }
 
 @Composable
-private fun DriverCardStopsAndControl() {
+private fun DriverCardStopsAndControl() = ChildStateful<IndexDriverViewModel> {
+
+    val uiState by uiState()
+
     RFCard(
         Modifier
             .fillMaxWidth()
@@ -335,7 +346,7 @@ private fun DriverCardStopsAndControl() {
 
             RFText(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.driver_stops_control),
+                text = stringResource(R.string.driver_stops_days, uiState.controlTypeDays),
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 16.sp,
                     color = RFColor.UxComponentColorBlueLagoon
@@ -346,7 +357,7 @@ private fun DriverCardStopsAndControl() {
 
             RFText(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.driver_stops_control),
+                text = stringResource(R.string.driver_stops_limit_amount, uiState.stopsLimitAmount),
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 16.sp,
                     color = RFColor.UxComponentColorBlueLagoon
@@ -357,7 +368,10 @@ private fun DriverCardStopsAndControl() {
 }
 
 @Composable
-private fun DriverCardDetails() {
+private fun DriverCardDetails() = ChildStateful<IndexDriverViewModel> {
+
+    val uiState by uiState()
+
     Box(
         Modifier
             .fillMaxWidth()
@@ -394,7 +408,7 @@ private fun DriverCardDetails() {
                     Row {
                         RFText(
                             modifier = Modifier.weight(1f),
-                            text = "Javier Estrela",
+                            text = uiState.cardDriver,
                             textStyle = RFTextStyle.Roboto(
                                 fontSize = 16.sp,
                                 color = RFColor.UxComponentColorDarkGray
@@ -423,7 +437,7 @@ private fun DriverCardDetails() {
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         RFText(
-                            text = "1926537221",
+                            text = uiState.cardNumber,
                             textStyle = RFTextStyle.Roboto(
                                 fontSize = 28.sp,
                                 color = RFColor.UxComponentColorCharcoal
@@ -444,7 +458,7 @@ private fun DriverCardDetails() {
                             ReusableSpacer(8.dp)
 
                             RFText(
-                                text = "Conductor",
+                                text = uiState.cardType,
                                 textStyle = RFTextStyle.Roboto(
                                     fontSize = 12.sp,
                                     color = RFColor.UxComponentColorCharcoal
@@ -459,8 +473,10 @@ private fun DriverCardDetails() {
 }
 
 @Composable
-private fun DriverProfile() {
-    val usernameDriver = "Alfredo"
+private fun DriverProfile() = ChildStateful<IndexDriverViewModel> {
+
+    val uiState by uiState()
+
     Box(
         Modifier
             .fillMaxWidth()
@@ -476,7 +492,7 @@ private fun DriverProfile() {
                 ReusableSpacer(8.dp)
 
                 RFText(
-                    text = stringResource(R.string.welcome_user, usernameDriver),
+                    text = stringResource(R.string.welcome_user, uiState.driverName),
                     textStyle = RFTextStyle.RobotoMedium(
                         fontSize = 20.sp,
                         color = RFColor.UxComponentColorMidnightBlue
@@ -486,7 +502,7 @@ private fun DriverProfile() {
             }
 
             RFText(
-                text = "Logistica Integral del Perú S.A.C",
+                text = uiState.businessName,
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 12.sp,
                     color = RFColor.UxComponentColorMidnightBlue

@@ -65,7 +65,7 @@ class LoginRepositoryImpl @Inject constructor(
         if (clientInformation.client != null) {
             SessionStorage.setString(UserSession.ID_CLIENT, clientInformation.client.idClient)
             SessionStorage.setString(UserSession.NAME, clientInformation.name)
-            SessionStorage.setString(UserSession.LAST_NAME, clientInformation.name)
+            SessionStorage.setString(UserSession.LAST_NAME, clientInformation.lastName)
             SessionStorage.setString(UserSession.BUSINESS_NAME, clientInformation.client.businessName)
         }
 

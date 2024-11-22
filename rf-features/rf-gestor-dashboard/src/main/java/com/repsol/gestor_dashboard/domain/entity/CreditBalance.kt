@@ -6,10 +6,10 @@ data class CreditBalance(
     val balance: String,
     val lineCred: String,
     val paymentDeadLine: String,
-    val excedido: String,
-    val fechaCaducidad: String,
-    val recargar: Boolean,
-    val importe: String,
-    val deuda: String,
+    val exceeded: String,
+    val expirationDate: String,
+    val shouldReload: Boolean,
+    val amount: String,
+    val debtAmount: String,
     val errorManager: GlobalError
 )

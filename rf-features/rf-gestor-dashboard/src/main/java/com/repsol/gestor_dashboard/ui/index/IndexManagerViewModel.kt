@@ -120,7 +120,7 @@ class IndexManagerViewModel @Inject constructor(
     }
 
     private fun overdueDebt(data: CreditBalance?): Boolean {
-        val debt = data?.deuda?.toNumericValue()
+        val debt = data?.debtAmount?.toNumericValue()
 
         return (CurrencyFormatter.formatCurrencyInSoles(debt!!).contentEquals("")
                 || CurrencyFormatter.formatCurrencyInSoles(debt).contentEquals(ZERO.toString()))

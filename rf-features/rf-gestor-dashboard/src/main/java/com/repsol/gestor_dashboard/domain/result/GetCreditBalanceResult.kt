@@ -29,6 +29,6 @@ fun DataOutput<CreditBalance>.handleResult(): GetCreditBalanceResult {
 }
 
 private fun hasError(data: CreditBalance): Boolean {
-    return data.deuda.contentEquals("Cargando..") ||
-            data.importe.contentEquals("Cargando..")
+    return data.debtAmount.contentEquals("Cargando..") ||
+            data.amount.contentEquals("Cargando..")
 }

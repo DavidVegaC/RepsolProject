@@ -14,9 +14,9 @@ object UserSession {
     }
 
     fun getFullName(): String {
-        val firtsName =  SessionStorage.getString(NAME).orEmpty()
+        val firstName =  SessionStorage.getString(NAME).orEmpty()
         val lastName = SessionStorage.getString(LAST_NAME).orEmpty()
 
-        return "$firtsName $lastName".trim()
+        return "$firstName $lastName".trim()
     }
 }

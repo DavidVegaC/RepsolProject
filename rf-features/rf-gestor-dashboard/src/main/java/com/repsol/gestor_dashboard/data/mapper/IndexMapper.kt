@@ -29,11 +29,11 @@ object IndexMapper {
             balance = response.data.balance,
             lineCred = response.data.lineCred,
             paymentDeadLine = response.data.paymentDeadLine,
-            excedido = response.data.excedido,
-            fechaCaducidad = response.data.fechaCaducidad,
-            recargar = response.data.recargar,
-            importe = response.data.importe,
-            deuda = response.data.deuda,
+            exceeded = response.data.excedido,
+            expirationDate = response.data.fechaCaducidad,
+            shouldReload = response.data.recargar,
+            amount = response.data.importe,
+            debtAmount = response.data.deuda,
             errorManager = error
         )
 
