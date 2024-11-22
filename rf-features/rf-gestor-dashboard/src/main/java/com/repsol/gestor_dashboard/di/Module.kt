@@ -1,11 +1,11 @@
 package com.repsol.gestor_dashboard.di
 
 import com.repsol.core_data.common.remote.ApiCreator
-import com.repsol.gestor_dashboard.data.remote.api.CreditBalanceApi
-import com.repsol.gestor_dashboard.data.remote.data_source.CreditBalanceRemoteDS
-import com.repsol.gestor_dashboard.data.remote.data_source.DefaultCreditBalanceRemoteDS
-import com.repsol.gestor_dashboard.data.repository.CreditBalanceRepositoryImpl
-import com.repsol.gestor_dashboard.domain.repository.CreditBalanceRepository
+import com.repsol.gestor_dashboard.data.remote.api.IndexApi
+import com.repsol.gestor_dashboard.data.remote.data_source.DefaultIndexRemoteDS
+import com.repsol.gestor_dashboard.data.remote.data_source.IndexRemoteDS
+import com.repsol.gestor_dashboard.data.repository.IndexRepositoryImpl
+import com.repsol.gestor_dashboard.domain.repository.IndexRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,19 +14,19 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DashboardModel {
+object Module {
 
     @Provides
-    fun provideCreditBalanceRepository(repository: CreditBalanceRepositoryImpl): CreditBalanceRepository = repository
+    fun provideIndexRepository(repository: IndexRepositoryImpl): IndexRepository = repository
 
     @Provides
-    fun provideCreditBalanceRemoteDS(
-        remoteDS: DefaultCreditBalanceRemoteDS
-    ): CreditBalanceRemoteDS = remoteDS
+    fun provideIndexRemoteDS(
+        remoteDS: DefaultIndexRemoteDS
+    ): IndexRemoteDS = remoteDS
 
     @Singleton
     @Provides
-    fun provideCreditBalanceApi(
-        apiCreator : ApiCreator
-    ): CreditBalanceApi = apiCreator.create()
+    fun provideIndexApi(
+        apiCreator: ApiCreator
+    ): IndexApi = apiCreator.create()
 }

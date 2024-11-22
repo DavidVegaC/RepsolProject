@@ -1,6 +1,5 @@
 package com.repsol.tools.utils
 
-
 import com.repsol.core_domain.storage.SessionStorage
 
 object UserSession {

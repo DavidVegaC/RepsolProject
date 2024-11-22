@@ -1,5 +1,8 @@
 package com.repsol.gestor_dashboard.ui.index
 
+import android.Manifest
+import android.content.Context
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -7,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,7 +23,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,15 +34,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.repsol.components.button.RFButton
-import com.repsol.components.button.style.RFButtonOnColor
 import com.repsol.components.button.style.RFButtonShape
 import com.repsol.components.graph.CircleGraph
 import com.repsol.components.icon.RFIcon
@@ -44,7 +54,6 @@ import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
 import com.repsol.components.utils.conditionalModifier
 import com.repsol.components.utils.setGone
-import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiIntent as UiIntent
 import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.rf_assets.R
@@ -54,6 +63,8 @@ import com.repsol.tools.utils.CurrencyFormatter
 import com.repsol.tools.utils.UserSession
 import com.repsol.tools.utils.toDoubleOrDefault
 import com.repsol.tools.utils.toNumericValue
+import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiEffect as UiEffect
+import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiIntent as UiIntent
 
 @Composable
 fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerViewModel> {
@@ -93,7 +104,7 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
                         when {
                             uiState.isLoading -> PlaceholderInfoSection()
                             !uiState.errorMessage.isNullOrEmpty() -> CreditInfoSectionError()
-                            uiState.showRetry -> {execUiIntent(UiIntent.onRetryClick)}
+                            uiState.showRetry -> {execUiIntent(UiIntent.OnRetryClick)}
                             else -> CreditInfoSection()
                         }
                     }
@@ -118,11 +129,60 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
 
             }
         }
+
+        UiEffectIsEnabled<UiEffect.SuccessDownloadSnackbar> {
+            Snackbar(
+                modifier = Modifier.padding(16.dp).align(Alignment.BottomCenter),
+                contentColor = RFColor.UxComponentColorWhite.color,
+                containerColor = RFColor.UxComponentColorGreen.color,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RFIcon(
+                        painter = rememberVectorPainter(Icons.Default.Check),
+                        contentDescription = "Éxito",
+                        tint = RFColor.UxComponentColorWhite,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = it.text)
+                }
+            }
+        }
+
+        UiEffectIsEnabled<UiEffect.ErrorDownloadSnackbar> {
+            Snackbar(
+                modifier = Modifier.padding(16.dp).align(Alignment.BottomCenter),
+                contentColor = RFColor.UxComponentColorCharcoal.color,
+                containerColor = RFColor.UxComponentColorMistyRose.color,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RFIcon(
+                        painter = painterResource(R.drawable.ic_danger),
+                        contentDescription = "Error",
+                        tint = RFColor.UxComponentColorRed,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = it.text, color = RFColor.UxComponentColorCharcoal.color)
+                }
+            }
+        }
     }
 }
 
+
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-private fun DownloadAllPrices() {
+private fun DownloadAllPrices() = ChildStateful<IndexManagerViewModel> {
+
+    val writePermissionState = rememberPermissionState(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    val readPermissionState = rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
+
+    // Verifica si la versión de Android es menor que Android 10 (API 29)
+    val isApi29OrHigher = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+    val context: Context = LocalContext.current
     Box(
         modifier = Modifier.fillMaxWidth()
             .padding(vertical = 24.dp, horizontal = 16.dp),
@@ -133,8 +193,19 @@ private fun DownloadAllPrices() {
                 .fillMaxWidth()
                 .height(48.dp),
             text = stringResource(R.string.download_all_prices),
-            onClick = {},
-            icon = {
+            onClick = {
+
+                if (isApi29OrHigher) {
+                    execUiIntent(UiIntent.OnDownloadAllPrices(context, true))
+                } else {
+                    if (writePermissionState.status.isGranted && readPermissionState.status.isGranted) {
+                        execUiIntent(UiIntent.OnDownloadAllPrices(context, false))
+                    } else {
+                        writePermissionState.launchPermissionRequest()
+                        readPermissionState.launchPermissionRequest()
+                    }
+                }
+            }, icon = {
                 RFIcon(
                     painter = painterResource(R.drawable.ic_ees),
                     tint = RFColor.UxComponentColorWhite
@@ -294,7 +365,7 @@ private fun CreditInfoSectionError() = ChildStateful<IndexManagerViewModel> {
                     color = RFColor.UxComponentColorWhite
                 ),
                 rfShape = RFButtonShape.Round,
-                onClick = {execUiIntent(UiIntent.onRetryClick)}
+                onClick = {execUiIntent(UiIntent.OnRetryClick)}
             )
         }
 

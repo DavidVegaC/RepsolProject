@@ -1,14 +1,21 @@
 package com.repsol.gestor_dashboard.ui.index
 
+import android.content.Context
 
 import androidx.lifecycle.SavedStateHandle
+import com.repsol.core_domain.common.entities.MimeType
 import androidx.lifecycle.viewModelScope
 import com.repsol.core_domain.storage.SessionStorage
 import com.repsol.core_platform.CoreViewModel
+import com.repsol.gestor_dashboard.domain.result.PostDownloadResult
+import com.repsol.gestor_dashboard.domain.usecase.PostDownloadUseCase
+import com.repsol.tools.utils.DownloadUtils.saveBase64FileToDownload
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiEffect as UiEffect
 import com.repsol.gestor_dashboard.domain.entity.CreditBalance
 import com.repsol.gestor_dashboard.domain.result.GetCreditBalanceResult
 import com.repsol.gestor_dashboard.domain.usecase.GetCreditBalanceUseCase
-import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiIntent
 import com.repsol.tools.utils.CurrencyFormatter
 import com.repsol.tools.utils.UserSession
 import com.repsol.tools.utils.ZERO
@@ -17,14 +24,13 @@ import com.repsol.tools.utils.toNumericValue
 import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiEvent as UiEvent
 import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiIntent as UiIntent
 import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiState as UiState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class IndexManagerViewModel @Inject constructor(
+    private val postDownloadUseCase: PostDownloadUseCase,
+    private val getCreditBalanceUseCase: GetCreditBalanceUseCase,
     savedStateHandle: SavedStateHandle,
-    private val getCreditBalanceUseCase: GetCreditBalanceUseCase
 ) : CoreViewModel<UiState, UiIntent, UiEvent>(
     savedStateHandle = savedStateHandle,
     defaultUiState = {
@@ -39,9 +45,34 @@ class IndexManagerViewModel @Inject constructor(
 
     override suspend fun handleIntent(intent: UiIntent) {
         when (intent) {
-            IndexUiIntent.onRetryClick -> retryLoadingData()
+            is UiIntent.OnDownloadAllPrices-> downloadAllPrices(intent.context, intent.isApi29OrHigher)
+            UiIntent.OnRetryClick -> retryLoadingData()
         }
+    }
 
+    private suspend fun downloadAllPrices(context: Context, isApi29OrHigher: Boolean) {
+        isLoading = true
+        when (val result = postDownloadUseCase()) {
+            is PostDownloadResult.Success -> {
+                val isSavedFiled: Boolean = saveBase64FileToDownload(
+                    context = context,
+                    base64String = result.base64String,
+                    fileName = "Reportes Precios.xlsx",
+                    mimetype = MimeType.EXCEL.value,
+                    isApi29OrHigher = isApi29OrHigher,
+                )
+
+                if (isSavedFiled) {
+                    UiEffect.SuccessDownloadSnackbar(text = "Se guardó exitosamente el archivo en Descargas.").enable(6000)
+                } else {
+                    UiEffect.ErrorDownloadSnackbar(text = "Ocurrió un error al guardar el archivo.").enable(6000)
+                }
+            }
+            is PostDownloadResult.Error -> {
+                UiEffect.ErrorDownloadSnackbar(text = "Error en el servicio").enable(5000)
+            }
+        }
+        isLoading = false
     }
 
     private fun retryLoadingData() {
@@ -52,9 +83,7 @@ class IndexManagerViewModel @Inject constructor(
     private fun loadCreditBalance() {
         setUiState { copy(isLoading = true, showRetry = false) }
         viewModelScope.launch {
-            val result = getCreditBalanceUseCase(
-                params = SessionStorage.getString(UserSession.ID_CLIENT).orEmpty()
-            )
+            val result = getCreditBalanceUseCase()
             handleResult(result)
             setUiState { copy(isLoading = false) }
         }
@@ -108,6 +137,5 @@ class IndexManagerViewModel @Inject constructor(
             ZERO
         }
     }
-
 
 }

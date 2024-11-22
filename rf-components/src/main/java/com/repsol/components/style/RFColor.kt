@@ -20,6 +20,7 @@ sealed class RFColor(val color: Color) {
     object UxComponentColorDiamond: RFColor(Color(0xFFC0EBF2))
     object UxComponentColorRed: RFColor(Color(0xFFE4002B))
     object UxComponentColorMistyRose: RFColor(Color(0xFFFCE5E9))
+    object UxComponentColorWarning: RFColor(Color(0xFFE56565))
     object UxComponentColorLightPink: RFColor(Color(0xFFFF495A6))
     object UxComponentColorIrisBlue: RFColor(Color(0xFF00ADC3))
     object UxComponentColorPowderBlue: RFColor(Color(0xFFC0EBF2))

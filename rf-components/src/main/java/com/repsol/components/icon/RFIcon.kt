@@ -11,12 +11,13 @@ import com.repsol.components.utils.rfClickableOvalRipple
 fun RFIcon(
     painter: Painter,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
     onClick: (() -> Unit)? = null,
     tint: RFColor = RFColor.UxComponentColorEasternBlue
 ) {
     Icon(
         painter = painter,
-        contentDescription = null,
+        contentDescription = contentDescription,
         modifier = modifier
             .run {
                 if (onClick != null) {
