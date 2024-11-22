@@ -68,6 +68,7 @@ import com.repsol.gestor_dashboard.ui.NavigationHost
 import com.repsol.gestor_dashboard.ui.dashboard.interactor.BottomBarContent
 import com.repsol.gestor_dashboard.ui.dashboard.interactor.DrawerOnlyContent
 import com.repsol.rf_assets.R
+import com.repsol.tools.utils.UserSession
 import kotlinx.coroutines.launch
 import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiEvent as UiEvent
 import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiIntent as UiIntent
@@ -367,13 +368,13 @@ fun CustomDrawerContent(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Alejandra Martínez Muñoz",
+                    text = UserSession.getFullName(),
                     color = Color.White,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Logística Integral del Perú S.A.C.",
+                    text = UserSession.getUserData(UserSession.BUSINESS_NAME),
                     color = Color.White.copy(alpha = 0.8f),
                     style = MaterialTheme.typography.bodyMedium
                 )

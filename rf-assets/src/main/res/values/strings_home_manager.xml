@@ -15,9 +15,11 @@
     <string name="approved_line">Línea aprobada</string>
     <string name="available_balance">Saldo disponible</string>
     <string name="business_goal">Avance meta comercial</string>
-    <string name="deadline">Crédito a 15 días</string>
+    <string name="deadline">Crédito a %s</string>
+    <string name="percentage_format">%s%%</string>
     <string name="debtWarning">Tienes una deuda vencida</string>
     <string name="what_do_you_want_to_do">¿Qué deseas hacer?</string>
     <string name="download_all_prices">Descargar todos los precios</string>
     <string name="view_not_available_at_this_time">Vista no disponible en estos momentos</string>
+    <string name="retry">Reintentar</string>
 </resources>

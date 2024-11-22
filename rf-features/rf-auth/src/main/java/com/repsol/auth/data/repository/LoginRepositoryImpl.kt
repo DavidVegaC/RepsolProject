@@ -17,6 +17,7 @@ import com.repsol.railway.Output
 import com.repsol.railway.asFailure
 import com.repsol.railway.asSuccessful
 import com.repsol.railway.isFailure
+import com.repsol.tools.utils.UserSession
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -62,10 +63,10 @@ class LoginRepositoryImpl @Inject constructor(
         }
         val clientInformation: UserInformation = toUserInformation(dataOutput.asSuccessful().data)
         if (clientInformation.client != null) {
-            SessionStorage.setString("idClient", clientInformation.client.idClient)
-            SessionStorage.setString("name", clientInformation.name)
-            SessionStorage.setString("lastName", clientInformation.name)
-            SessionStorage.setString("businessName", clientInformation.client.businessName)
+            SessionStorage.setString(UserSession.ID_CLIENT, clientInformation.client.idClient)
+            SessionStorage.setString(UserSession.NAME, clientInformation.name)
+            SessionStorage.setString(UserSession.LAST_NAME, clientInformation.name)
+            SessionStorage.setString(UserSession.BUSINESS_NAME, clientInformation.client.businessName)
         }
 
         return Output.Success(clientInformation)

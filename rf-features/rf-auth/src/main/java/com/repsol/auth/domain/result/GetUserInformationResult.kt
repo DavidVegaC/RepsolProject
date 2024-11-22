@@ -8,32 +8,29 @@ import com.repsol.railway.isSuccessful
 
 sealed class GetUserInformationResult {
 
-    data object IsGestor: GetUserInformationResult()
+    data object IsGestor : GetUserInformationResult()
 
-    data object IsDriver: GetUserInformationResult()
+    data object IsDriver : GetUserInformationResult()
 
-    data class Error(val message: String): GetUserInformationResult()
+    data class Error(val message: String) : GetUserInformationResult()
 }
 
-fun DataOutput<UserInformation>.handleResult(): GetUserInformationResult = when {
-        isSuccessful() -> {
-            val userInformation: UserInformation = this.data
-            val errorManager = userInformation.errorManager
-            if (errorManager.code.contentEquals("0")) {
-                GetUserInformationResult.Error(message = errorManager.message.orEmpty())
-            }
-
-            if (userInformation.client == null) {
-                GetUserInformationResult.Error(message = "")
-            } else if (UserProfile.isGestor(userInformation.client.profileId)) {
-                GetUserInformationResult.IsGestor
-            } else {
-                GetUserInformationResult.IsDriver
-            }
+fun DataOutput<UserInformation>.handleResult(): GetUserInformationResult {
+    if (this.isSuccessful()) {
+        val userInformation: UserInformation = this.data
+        val errorManager = userInformation.errorManager
+        if (errorManager.code.contentEquals("0").not()) {
+            return GetUserInformationResult.Error(message = errorManager.message.orEmpty())
         }
-
-        else -> {
-            val error: DataError.Default = this.error as DataError.Default
-            GetUserInformationResult.Error(message = error.message)
+        return if (userInformation.client == null) {
+            GetUserInformationResult.Error(message = "")
+        } else if (UserProfile.isGestor(userInformation.client.profileId)) {
+            GetUserInformationResult.IsGestor
+        } else {
+            GetUserInformationResult.IsDriver
         }
+    } else {
+        val error: DataError.Default = this.error as DataError.Default
+        return GetUserInformationResult.Error(message = error.message)
+    }
 }

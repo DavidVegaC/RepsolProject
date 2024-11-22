@@ -14,16 +14,16 @@ sealed class ValidateLoginResult {
     data object GeneralError: ValidateLoginResult()
 }
 
-fun Output<Profile, GlobalError>.handleResult(): ValidateLoginResult = when {
-    isSuccessful() -> {
-        ValidateLoginResult.Success(profile = this.data)
+fun Output<Profile, GlobalError>.handleResult(): ValidateLoginResult {
+
+    if (isSuccessful()) {
+        return ValidateLoginResult.Success(profile = data)
     }
-    else -> {
-        val error: GlobalError = this.error
-        if (error.code == "403042") {
-            ValidateLoginResult.LoginError
-        }
-        ValidateLoginResult.GeneralError
+
+    val error: GlobalError = this.error
+    if (error.code == "403042") {
+        return ValidateLoginResult.LoginError
     }
+    return ValidateLoginResult.GeneralError
 }
 

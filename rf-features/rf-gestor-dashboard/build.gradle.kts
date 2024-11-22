@@ -7,6 +7,7 @@ klean {
     name = "rf_gestor_dashboard"
     features {
         useUiDependencies = true
+        useNetworkDependencies = true
     }
 }
 
@@ -18,4 +19,6 @@ dependencies {
     api(project(":rf-assets"))
     api(project(":rf-core-domain"))
     api(project(":rf-tools"))
+    api(project(":rf-core-data"))
+    api(project(":railway"))
 }

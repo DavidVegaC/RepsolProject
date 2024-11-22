@@ -1,6 +1,5 @@
 package com.repsol.gestor_dashboard.ui.index
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,14 +19,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,23 +35,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.repsol.components.button.RFButton
+import com.repsol.components.button.style.RFButtonOnColor
 import com.repsol.components.button.style.RFButtonShape
+import com.repsol.components.graph.CircleGraph
 import com.repsol.components.icon.RFIcon
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
 import com.repsol.components.utils.conditionalModifier
 import com.repsol.components.utils.setGone
-import com.repsol.core_domain.storage.SessionStorage
+import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiIntent as UiIntent
+import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
 import com.repsol.tools.components.ReusableSpacer
 import com.repsol.tools.utils.CurrencyFormatter
+import com.repsol.tools.utils.UserSession
+import com.repsol.tools.utils.toDoubleOrDefault
+import com.repsol.tools.utils.toNumericValue
 
 @Composable
 fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerViewModel> {
-    val isErorDatosCredit = false // mockEscenario
+    val uiState by uiState()
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -85,10 +90,11 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
                     ) {
                         HeaderHomeSection()
                         ReusableSpacer(16.dp)
-                        if (isErorDatosCredit) {
-                            CreditInfoSectionError()
-                        } else {
-                            CreditInfoSection()
+                        when {
+                            uiState.isLoading -> PlaceholderInfoSection()
+                            !uiState.errorMessage.isNullOrEmpty() -> CreditInfoSectionError()
+                            uiState.showRetry -> {execUiIntent(UiIntent.onRetryClick)}
+                            else -> CreditInfoSection()
                         }
                     }
                 }
@@ -116,7 +122,7 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
 }
 
 @Composable
-fun DownloadAllPrices() {
+private fun DownloadAllPrices() {
     Box(
         modifier = Modifier.fillMaxWidth()
             .padding(vertical = 24.dp, horizontal = 16.dp),
@@ -140,7 +146,7 @@ fun DownloadAllPrices() {
 }
 
 @Composable
-fun OptionHomeManager() {
+private fun OptionHomeManager() {
     val actions = listOf(
         "Asignar Saldo" to R.drawable.ic_dollar,
         "Crear nueva tarjeta" to R.drawable.ic_pay,
@@ -231,7 +237,7 @@ fun OptionHomeManager() {
 }
 
 @Composable
-fun CreditInfoSection() {
+private fun CreditInfoSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -250,7 +256,7 @@ fun CreditInfoSection() {
 }
 
 @Composable
-fun CreditInfoSectionError() {
+private fun CreditInfoSectionError() = ChildStateful<IndexManagerViewModel> {
     Box(
         Modifier
             .fillMaxWidth()
@@ -277,17 +283,50 @@ fun CreditInfoSectionError() {
                 ),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+
+            ReusableSpacer(24.dp)
+
+            RFButton(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = stringResource(R.string.retry),
+                textStyle = RFTextStyle.Roboto(
+                    fontSize = 12.sp,
+                    color = RFColor.UxComponentColorWhite
+                ),
+                rfShape = RFButtonShape.Round,
+                onClick = {execUiIntent(UiIntent.onRetryClick)}
+            )
         }
 
     }
 }
 
 @Composable
-fun DebtWarning() {
+private fun PlaceholderInfoSection() {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .heightIn(300.dp)
+            .background(RFColor.UxComponentColorWhite.color, shape = RoundedCornerShape(16.dp))
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ){
+        CircularProgressIndicator(
+            modifier = Modifier.size(48.dp),
+            color = RFColor.UxComponentColorDarkOrange.color,
+            strokeWidth = 4.dp
+        )
+    }
+}
+
+@Composable
+private fun DebtWarning() = ChildStateful<IndexManagerViewModel>  {
+    val uiState by uiState()
+
     Column(Modifier.fillMaxWidth()) {
         Box(modifier = Modifier
             .conditionalModifier(
-                conditional = false,
+                conditional = uiState.overdueDebt,
                 ifModifier = { setGone() },
                 elseModifier = { this }
             )
@@ -333,7 +372,8 @@ fun DebtWarning() {
 }
 
 @Composable
-fun CreditContentTextAndGraph() {
+private fun CreditContentTextAndGraph() = ChildStateful<IndexManagerViewModel> {
+    val uiState by uiState()
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth(),
@@ -366,7 +406,7 @@ fun CreditContentTextAndGraph() {
                     )
 
                     RFText(
-                        text = CurrencyFormatter.formatCurrencyInSoles(750000.00),
+                        text = CurrencyFormatter.formatCurrencyInSoles((uiState.data?.lineCred).toDoubleOrDefault()),
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 18.sp,
                             color = RFColor.UxComponentColorDarkOrange
@@ -374,7 +414,7 @@ fun CreditContentTextAndGraph() {
                     )
 
                     RFText(
-                        text = stringResource(R.string.deadline),
+                        text = stringResource(R.string.deadline, (uiState.data?.paymentDeadLine!!)),
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 12.sp,
                             color = RFColor.UxComponentColorGainsboro
@@ -410,7 +450,7 @@ fun CreditContentTextAndGraph() {
                     )
 
                     RFText(
-                        text = CurrencyFormatter.formatCurrencyInSoles(137582.63),
+                        text = CurrencyFormatter.formatCurrencyInSoles((uiState.data?.balance).toDoubleOrDefault()),
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 18.sp,
                             color = RFColor.UxComponentColorDarkCerulean
@@ -446,7 +486,7 @@ fun CreditContentTextAndGraph() {
                     )
 
                     RFText(
-                        text = "81%",
+                        text = stringResource(R.string.percentage_format, uiState.commercialGoal.toString()) ,
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 18.sp,
                             color = RFColor.UxComponentColorIrisBlue
@@ -461,11 +501,11 @@ fun CreditContentTextAndGraph() {
             modifier = Modifier
                 .size(200.dp)
                 .padding(start = 16.dp)
-                .background(RFColor.UxComponentColorDarkGray.color, shape = RoundedCornerShape(50))
         ) {
-            Text(
-                text = "Espacio para la grafica",
-                color = Color.Gray
+            CircleGraph(
+                approvedLine = uiState.data?.lineCred.toDoubleOrDefault(),
+                availableBalance = uiState.data?.balance?.toNumericValue()!!.toDouble(),
+                commercialGoal = uiState.commercialGoal!!.toInt(),
             )
         }
 
@@ -475,8 +515,7 @@ fun CreditContentTextAndGraph() {
 }
 
 @Composable
-fun HeaderHomeSection() {
-    val username = "Alejandra"
+private fun HeaderHomeSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -493,7 +532,7 @@ fun HeaderHomeSection() {
                 ReusableSpacer(8.dp)
 
                 RFText(
-                    text = stringResource(R.string.welcome_user, username),
+                    text = stringResource(R.string.welcome_user, UserSession.getUserData(UserSession.NAME)),
                     textStyle = RFTextStyle.Roboto(
                         fontSize = 20.sp,
                         color = RFColor.UxComponentColorWhite
@@ -501,8 +540,10 @@ fun HeaderHomeSection() {
                 )
             }
 
+            ReusableSpacer(4.dp)
+
             RFText(
-                text = "Logistica Integral del Perú S.A.C",
+                text = UserSession.getUserData(UserSession.BUSINESS_NAME),
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 12.sp,
                     color = RFColor.UxComponentColorWhite
