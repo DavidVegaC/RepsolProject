@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.repsol.components.card.RFCard
-import com.repsol.components.filterspinner.FilterSpinner
+import com.repsol.components.filter.RFFilter
 import com.repsol.components.icon.RFIcon
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
@@ -119,13 +119,11 @@ fun VehicleScreen(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ContainerPagination(item: String) {
-
-    Column(Modifier.padding(horizontal = 16.dp)) {
         RFCard(
             Modifier
                 .fillMaxWidth()
-                .heightIn(94.dp),
-
+                .heightIn(120.dp)
+                .padding(start = 16.dp, end = 16.dp),
             ) {
             Column(Modifier.padding(24.dp)) {
                 Row(
@@ -133,6 +131,7 @@ private fun ContainerPagination(item: String) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RFText(
+                        modifier = Modifier.weight(1f),
                         text = "Mercedes-Benz",
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 16.sp,
@@ -142,8 +141,9 @@ private fun ContainerPagination(item: String) {
 
                     Box(
                         Modifier
-                            .heightIn(24.dp)
-                            .widthIn(32.dp)
+                            .padding(end = 32.dp)
+                            .height(24.dp)
+                            .width(32.dp)
                             .background(
                                 RFColor.UxComponentColorGreen.color,
                                 shape = RoundedCornerShape(4.dp)
@@ -167,7 +167,9 @@ private fun ContainerPagination(item: String) {
                 ) {
 
                     RFText(
-                        text = "ZEC-542",
+                        modifier = Modifier.weight(1f),
+                        text = "ZEC-542323232123",
+                        maxLines = 2,
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 28.sp,
                             color = RFColor.UxComponentColorCharcoal
@@ -202,7 +204,6 @@ private fun ContainerPagination(item: String) {
                 }
             }
         }
-    }
 }
 
 @Composable
@@ -250,7 +251,7 @@ private fun FilterComboBox() {
     val options = listOf("Nombre", "Placa", "Estado")
     var selectionOption by remember { mutableStateOf("Ordenar") }
 
-    FilterSpinner(
+    RFFilter(
         radius = 24.dp,
         leadingContent = {
             Box(
@@ -269,18 +270,9 @@ private fun FilterComboBox() {
                 )
             }
         },
-        trailingContent = {
-            RFIcon(
-                painter = painterResource(R.drawable.ic_arrow_drop_down),
-                tint = RFColor.UxComponentColorBlueLagoon
-            )
-        },
-        clickable = true,
-        options = options,
-        onOptionSelected = { selectionOption = it },
         textContent = {
             RFText(
-                text = selectionOption,
+                text = stringResource(R.string.filter),
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 14.sp,
                     color = RFColor.UxComponentColorCharcoal

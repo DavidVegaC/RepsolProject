@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_cards">Mis tarjetas</string>
+    <string name="new_card">Nueva tarjeta</string>
+    <string name="qr">Convertir tarjeta a QR</string>
+    <string name="assign_balance">Asignar Saldo</string>
+    <string name="see_all">Ver todo</string>
+    <string name="card_value">Tarjeta %1s</string>
+    <string name="display_register_cards">Mostrando %1s placas tarjetas registradas</string>
+    <string name="display_part_of_total_cards">%1s de %2s</string>
+</resources>

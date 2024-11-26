@@ -13,17 +13,18 @@ enum class Status(
         id = "1",
         displayText = "inactive"
     ),
-    NONE(
-        id = "NONE",
-        displayText = "",
+    CANCELED(
+        id = "2",
+        displayText = "canceled",
     );
 
     companion object {
 
-        fun identifyBy(id: String): Status = when(id) {
+        fun identifyBy(id: String): Status? = when(id) {
             ACTIVE.id -> ACTIVE
             INACTIVE.id -> INACTIVE
-            else -> NONE
+            CANCELED.id -> CANCELED
+            else -> null
         }
     }
 }

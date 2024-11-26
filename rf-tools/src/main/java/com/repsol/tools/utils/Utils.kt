@@ -8,7 +8,8 @@ fun String?.toIntOrDefault(default: Int = ZERO): Int {
     return this?.toIntOrNull() ?:default
 }
 
-fun String.toNumericValue(): Double? {
+fun String.toNumericValue(): Double {
     return this.replace("[^\\d.]".toRegex(), "")
         .toDoubleOrDefault()
 }
+

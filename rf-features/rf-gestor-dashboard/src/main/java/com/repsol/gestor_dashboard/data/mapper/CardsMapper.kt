@@ -2,13 +2,15 @@ package com.repsol.gestor_dashboard.data.mapper
 
 import com.repsol.core_data.common.remote.dto.response.CardListResponse
 import com.repsol.core_data.common.remote.dto.response.CardResponse
+import com.repsol.core_data.common.remote.dto.response.PaginationResponse
 import com.repsol.core_domain.common.entities.Currency
+import com.repsol.core_domain.common.entities.PaginationState
 import com.repsol.core_domain.common.error.GlobalError
 import com.repsol.gestor_dashboard.data.remote.dto.response.kpi.KpiResponse
 import com.repsol.gestor_dashboard.domain.entity.CardItem
 import com.repsol.gestor_dashboard.domain.entity.CardList
 import com.repsol.gestor_dashboard.domain.entity.KpiData
-import com.repsol.tools.utils.CurrencyFormatter
+import com.repsol.tools.utils.Formatters
 import com.repsol.tools.utils.UNLIMITED
 
 object CardsMapper {
@@ -35,8 +37,10 @@ object CardsMapper {
         )
 
         val items: List<CardItem> = response.data.cardSearchListDto.map(::toCardItem)
+        val pagination: PaginationState = toPaginationState(response.data.pagination)
         return CardList(
             items = items,
+            pagination = pagination,
             errorManager = error
         )
     }
@@ -60,6 +64,16 @@ object CardsMapper {
 
     private fun formatAmount(amount: String): String = when {
         amount.contentEquals(UNLIMITED) -> UNLIMITED
-        else -> CurrencyFormatter.formatCurrency(amount, Currency.PEN)
+        else -> Formatters.formatCurrency(amount, Currency.PEN)
+    }
+
+    private fun toPaginationState(paginationState: PaginationResponse): PaginationState {
+
+        return PaginationState(
+            currentPage = paginationState.currentPage,
+            totalRows = paginationState.totalRows,
+            pageSize = paginationState.pageSize,
+            totalPage = paginationState.totalPage,
+        )
     }
 }

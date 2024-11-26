@@ -36,7 +36,7 @@ import com.repsol.gestor_dashboard.ui.vehicle.VehicleScreen
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
 import com.repsol.tools.components.ReusableSpacer
-import com.repsol.tools.utils.CurrencyFormatter
+import com.repsol.tools.utils.Formatters
 
 @Composable
 fun DetailVehicleScreen(modifier: Modifier = Modifier) {

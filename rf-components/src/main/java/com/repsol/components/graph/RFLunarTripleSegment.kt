@@ -13,6 +13,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.repsol.components.style.RFColor
@@ -24,8 +25,6 @@ fun RFLunarTripleSegment(
     active: Int,
     inactive: Int,
     canceled: Int,
-    total: Int,
-    date: String,
     modifier: Modifier = Modifier
 ){
     Box(
@@ -40,9 +39,14 @@ fun RFLunarTripleSegment(
 
             val totalAngle = 240f
             val totalData = active + inactive + canceled
-            val activeAngle = totalAngle * (active / totalData.toFloat())
-            val inactiveAngle = totalAngle * (inactive / totalData.toFloat())
-            val canceledAngle = totalAngle * (canceled / totalData.toFloat())
+
+            // Definir el tamaño del hueco entre los segmentos
+            val gapAngle = 0.75f // Ángulo de separación entre los segmentos
+
+            // Cálculo de los ángulos de los segmentos, teniendo en cuenta la separación
+            val activeAngle = (totalAngle - (gapAngle * 2)) * (active / totalData.toFloat())
+            val inactiveAngle = (totalAngle - (gapAngle * 2)) * (inactive / totalData.toFloat())
+            val canceledAngle = (totalAngle - (gapAngle * 2)) * (canceled / totalData.toFloat())
 
             // Dibuja el segmento activo
             drawArc(
@@ -57,8 +61,8 @@ fun RFLunarTripleSegment(
 
             // Dibuja el segmento inactivo
             drawArc(
-                color = RFColor.UxComponentColorGrey.color,
-                startAngle = 150f + activeAngle,
+                color = RFColor.UxComponentColorGainsboro.color,
+                startAngle = 150f + activeAngle + gapAngle, // Agregar el hueco entre segmentos
                 sweepAngle = inactiveAngle,
                 useCenter = false,
                 style = Stroke(width = strokeWidth, cap = StrokeCap.Butt),
@@ -69,7 +73,7 @@ fun RFLunarTripleSegment(
             // Dibuja el segmento cancelado
             drawArc(
                 color = RFColor.UxComponentColorRed.color,
-                startAngle = 150f + activeAngle + inactiveAngle,
+                startAngle = 150f + activeAngle + inactiveAngle + (gapAngle * 2), // Añadir dos huecos
                 sweepAngle = canceledAngle,
                 useCenter = false,
                 style = Stroke(width = strokeWidth, cap = StrokeCap.Butt),
@@ -92,19 +96,22 @@ fun RFLunarTripleSegment(
 
             )
             RFText(
-                text = "$total",
+                text = "${active + inactive + canceled}",
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 18.sp,
                     color = RFColor.UxComponentColorCharcoal
                 )
             )
-            RFText(
-                text = date,
-                textStyle = RFTextStyle.Roboto(
-                    fontSize = 12.sp,
-                    color = RFColor.UxComponentColorDarkGray
-                )
-            )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RFLunarTripleSegmentPreview() {
+    RFLunarTripleSegment(
+        active = 25,
+        inactive = 9,
+        canceled = 22,
+    )
 }

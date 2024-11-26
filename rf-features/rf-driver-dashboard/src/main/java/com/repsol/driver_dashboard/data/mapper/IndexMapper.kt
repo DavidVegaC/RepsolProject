@@ -5,7 +5,7 @@ import com.repsol.core_data.common.remote.dto.response.CardResponse
 import com.repsol.core_domain.common.entities.Currency
 import com.repsol.core_domain.common.error.GlobalError
 import com.repsol.driver_dashboard.domain.entity.DriverData
-import com.repsol.tools.utils.CurrencyFormatter
+import com.repsol.tools.utils.Formatters
 import com.repsol.tools.utils.UNLIMITED
 
 object IndexMapper {
@@ -35,6 +35,6 @@ object IndexMapper {
 
     private fun formatAmount(amount: String): String = when {
         amount.contentEquals(UNLIMITED) -> UNLIMITED
-        else -> CurrencyFormatter.formatCurrency(amount, Currency.PEN)
+        else -> Formatters.formatCurrency(amount, Currency.PEN)
     }
 }

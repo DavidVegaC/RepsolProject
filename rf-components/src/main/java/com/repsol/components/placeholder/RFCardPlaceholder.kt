@@ -26,7 +26,8 @@ fun RFCardPlaceholder(
     cornerRadius: Dp = 16.dp,
     indicatorColor: Color = RFColor.UxComponentColorDarkOrange.color,
     indicatorSize: Dp = 48.dp,
-    strokeWidth: Dp = 4.dp
+    strokeWidth: Dp = 4.dp,
+    showLoading: Boolean = true,
 ){
 
     RFCardPlaceholderImpl(
@@ -38,7 +39,8 @@ fun RFCardPlaceholder(
         contentAlignment = Alignment.Center,
         indicatorColor = indicatorColor,
         indicatorSize = indicatorSize,
-        strokeWidth = strokeWidth
+        strokeWidth = strokeWidth,
+        showLoading = showLoading,
     )
 
 }
@@ -53,7 +55,8 @@ private fun RFCardPlaceholderImpl(
     contentAlignment: Alignment = Alignment.Center,
     indicatorColor: Color,
     indicatorSize: Dp,
-    strokeWidth: Dp
+    strokeWidth: Dp,
+    showLoading: Boolean,
 ){
 
     Box(
@@ -64,11 +67,14 @@ private fun RFCardPlaceholderImpl(
             .padding(padding),
         contentAlignment = contentAlignment
     ){
-        CircularProgressIndicator(
-            modifier = Modifier.size(indicatorSize),
-            color = indicatorColor,
-            strokeWidth = strokeWidth
-        )
+        if (showLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(indicatorSize),
+                color = indicatorColor,
+                strokeWidth = strokeWidth
+            )
+        }
+
     }
 
 }

@@ -4,4 +4,17 @@
     <string name="skip">Omitir</string>
     <string name="start">Empezar</string>
     <string name="content_description_logo">Logo de la empresa</string>
+    <string name="active">Activas</string>
+    <string name="total">Total</string>
+    <string name="list_general">Listado General</string>
+    <string name="inactive">Inactivas</string>
+    <string name="canceled">Anuladas</string>
+    <string name="filter">Filtrar</string>
+
+    <!--CardsErrorDefault-->
+    <string name="view_not_available_at_this_time">Vista no disponible en estos momentos</string>
+    <string name="retry">Reintentar</string>
+
+    <string name="type">Tipo</string>
+
 </resources>

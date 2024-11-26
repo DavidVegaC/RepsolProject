@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import com.repsol.core_domain.common.entities.MimeType
 import androidx.lifecycle.viewModelScope
-import com.repsol.core_domain.storage.SessionStorage
 import com.repsol.core_platform.CoreViewModel
 import com.repsol.gestor_dashboard.domain.result.PostDownloadResult
 import com.repsol.gestor_dashboard.domain.usecase.PostDownloadUseCase
@@ -16,8 +15,7 @@ import com.repsol.gestor_dashboard.ui.index.interactor.IndexUiEffect as UiEffect
 import com.repsol.gestor_dashboard.domain.entity.CreditBalance
 import com.repsol.gestor_dashboard.domain.result.GetCreditBalanceResult
 import com.repsol.gestor_dashboard.domain.usecase.GetCreditBalanceUseCase
-import com.repsol.tools.utils.CurrencyFormatter
-import com.repsol.tools.utils.UserSession
+import com.repsol.tools.utils.Formatters
 import com.repsol.tools.utils.ZERO
 import com.repsol.tools.utils.toDoubleOrDefault
 import com.repsol.tools.utils.toNumericValue
@@ -122,8 +120,8 @@ class IndexManagerViewModel @Inject constructor(
     private fun overdueDebt(data: CreditBalance?): Boolean {
         val debt = data?.debtAmount?.toNumericValue()
 
-        return (CurrencyFormatter.formatCurrencyInSoles(debt!!).contentEquals("")
-                || CurrencyFormatter.formatCurrencyInSoles(debt).contentEquals(ZERO.toString()))
+        return (Formatters.formatCurrencyInSoles(debt!!).contentEquals("")
+                || Formatters.formatCurrencyInSoles(debt).contentEquals(ZERO.toString()))
     }
 
     private fun calculateCommercialGoal(data: CreditBalance?): Int {

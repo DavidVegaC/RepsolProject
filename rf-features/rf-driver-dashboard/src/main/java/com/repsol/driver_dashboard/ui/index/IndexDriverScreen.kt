@@ -31,13 +31,11 @@ import com.repsol.components.icon.RFIcon
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
-import com.repsol.core_platform.handler.UiState
 import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
 import com.repsol.tools.components.ReusableSpacer
-import com.repsol.tools.utils.CurrencyFormatter
 
 @Composable
 fun IndexDriverScreen(modifier: Modifier = Modifier) = Stateful<IndexDriverViewModel> {

@@ -396,6 +396,59 @@ sealed class RFTextStyle(var style: TextStyle) {
         )
     )
 
+    class RobotoBold(
+        color: RFColor = RFColor.UxComponentColorEasternBlue,
+        fontSize: TextUnit = 12.sp,
+        textAlign: TextAlign = TextAlign.Unspecified,
+        fontWeight: FontWeight? = null,
+        fontStyle: FontStyle? = null,
+        fontSynthesis: FontSynthesis? = null,
+        fontFeatureSettings: String? = null,
+        letterSpacing: TextUnit = TextUnit.Unspecified,
+        baselineShift: BaselineShift? = null,
+        textGeometricTransform: TextGeometricTransform? = null,
+        localeList: LocaleList? = null,
+        background: Color = Color.Unspecified,
+        textDecoration: TextDecoration? = null,
+        shadow: Shadow? = null,
+        drawStyle: DrawStyle? = null,
+        textDirection: TextDirection = TextDirection.Unspecified,
+        lineHeight: TextUnit = TextUnit.Unspecified,
+        textIndent: TextIndent? = null,
+        platformStyle: PlatformTextStyle? = null,
+        lineHeightStyle: LineHeightStyle? = null,
+        lineBreak: LineBreak = LineBreak.Unspecified,
+        hyphens: Hyphens = Hyphens.Unspecified,
+        textMotion: TextMotion? = null,
+    ) : RFTextStyle(
+        TextStyle(
+            fontFamily = RFFont.RobotoBold.font.toFontFamily(),
+            fontSize = fontSize,
+            color = color.color,
+            textAlign = textAlign,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontSynthesis = fontSynthesis,
+            fontFeatureSettings = fontFeatureSettings,
+            letterSpacing = letterSpacing,
+            baselineShift = baselineShift,
+            textGeometricTransform = textGeometricTransform,
+            localeList = localeList,
+            background = background,
+            textDecoration = textDecoration,
+            shadow = shadow,
+            platformStyle = platformStyle,
+            drawStyle = drawStyle,
+            textDirection = textDirection,
+            lineHeight = lineHeight,
+            textIndent = textIndent,
+            lineHeightStyle = lineHeightStyle,
+            lineBreak = lineBreak,
+            hyphens = hyphens,
+            textMotion = textMotion
+        )
+    )
+
     class RFButtonTextStyle(
         color: RFColor? = null,
         fontSize: TextUnit = 18.sp

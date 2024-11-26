@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,8 +46,10 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.repsol.components.button.RFButton
 import com.repsol.components.button.style.RFButtonShape
-import com.repsol.components.graph.CircleGraph
+import com.repsol.components.graph.RFCircleGraph
 import com.repsol.components.icon.RFIcon
+import com.repsol.components.placeholder.RFCardError
+import com.repsol.components.placeholder.RFCardPlaceholder
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
@@ -59,7 +60,7 @@ import com.repsol.core_ui.stateful.Stateful
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
 import com.repsol.tools.components.ReusableSpacer
-import com.repsol.tools.utils.CurrencyFormatter
+import com.repsol.tools.utils.Formatters
 import com.repsol.tools.utils.UserSession
 import com.repsol.tools.utils.toDoubleOrDefault
 import com.repsol.tools.utils.toNumericValue
@@ -104,6 +105,9 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
                         when {
                             uiState.isLoading -> PlaceholderInfoSection()
                             !uiState.errorMessage.isNullOrEmpty() -> CreditInfoSectionError()
+                            uiState.showRetry -> {
+                                execUiIntent(UiIntent.OnRetryClick)
+                            }
                             else -> CreditInfoSection()
                         }
                     }
@@ -111,10 +115,10 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
             }
             item {
                 Box(
-                    Modifier.layout{ measurable, constraints ->
+                    Modifier.layout { measurable, constraints ->
                         val placeable = measurable.measure(constraints)
-                        layout(placeable.width, placeable.height -110.dp.roundToPx()) {
-                            placeable.placeRelative(0,-110.dp.roundToPx())
+                        layout(placeable.width, placeable.height - 110.dp.roundToPx()) {
+                            placeable.placeRelative(0, -110.dp.roundToPx())
                         }
                     }
                 ) {
@@ -131,7 +135,9 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
 
         UiEffectIsEnabled<UiEffect.SuccessDownloadSnackbar> {
             Snackbar(
-                modifier = Modifier.padding(16.dp).align(Alignment.BottomCenter),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomCenter),
                 contentColor = RFColor.UxComponentColorWhite.color,
                 containerColor = RFColor.UxComponentColorGreen.color,
             ) {
@@ -151,7 +157,9 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
 
         UiEffectIsEnabled<UiEffect.ErrorDownloadSnackbar> {
             Snackbar(
-                modifier = Modifier.padding(16.dp).align(Alignment.BottomCenter),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomCenter),
                 contentColor = RFColor.UxComponentColorCharcoal.color,
                 containerColor = RFColor.UxComponentColorMistyRose.color,
             ) {
@@ -176,14 +184,17 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
 @Composable
 private fun DownloadAllPrices() = ChildStateful<IndexManagerViewModel> {
 
-    val writePermissionState = rememberPermissionState(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    val readPermissionState = rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
+    val writePermissionState =
+        rememberPermissionState(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    val readPermissionState =
+        rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
 
     // Verifica si la versión de Android es menor que Android 10 (API 29)
     val isApi29OrHigher = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
     val context: Context = LocalContext.current
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(vertical = 24.dp, horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -327,66 +338,21 @@ private fun CreditInfoSection() {
 
 @Composable
 private fun CreditInfoSectionError() = ChildStateful<IndexManagerViewModel> {
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .heightIn(300.dp)
-            .background(RFColor.UxComponentColorWhite.color, shape = RoundedCornerShape(16.dp))
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-
-        Column {
-            DisplayImage(Modifier.fillMaxWidth(), R.drawable.image_home_error)
-
-            ReusableSpacer(24.dp)
-
-            RFText(
-                text = stringResource(R.string.view_not_available_at_this_time),
-                textStyle = RFTextStyle.Roboto(
-                    fontSize = 12.sp,
-                    color = RFColor.UxComponentColorDarkOrange
-                ),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-
-            ReusableSpacer(24.dp)
-
-            RFButton(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = stringResource(R.string.retry),
-                textStyle = RFTextStyle.Roboto(
-                    fontSize = 12.sp,
-                    color = RFColor.UxComponentColorWhite
-                ),
-                rfShape = RFButtonShape.Round,
-                onClick = { execUiIntent(UiIntent.OnRetryClick) }
-            )
-        }
-
-    }
+    RFCardError(
+        R.drawable.image_home_error,
+        stringResource(R.string.view_not_available_at_this_time),
+        stringResource(R.string.retry),
+        onClick = { execUiIntent(UiIntent.OnRetryClick) }
+    )
 }
 
 @Composable
 private fun PlaceholderInfoSection() {
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .heightIn(300.dp)
-            .background(RFColor.UxComponentColorWhite.color, shape = RoundedCornerShape(16.dp))
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ){
-        CircularProgressIndicator(
-            modifier = Modifier.size(48.dp),
-            color = RFColor.UxComponentColorDarkOrange.color,
-            strokeWidth = 4.dp
-        )
-    }
+    RFCardPlaceholder()
 }
 
 @Composable
-private fun DebtWarning() = ChildStateful<IndexManagerViewModel>  {
+private fun DebtWarning() = ChildStateful<IndexManagerViewModel> {
     val uiState by uiState()
 
     Column(Modifier.fillMaxWidth()) {
@@ -472,7 +438,7 @@ private fun CreditContentTextAndGraph() = ChildStateful<IndexManagerViewModel> {
                     )
 
                     RFText(
-                        text = CurrencyFormatter.formatCurrencyInSoles((uiState.data?.lineCred).toDoubleOrDefault()),
+                        text = Formatters.formatCurrencyInSoles((uiState.data?.lineCred).toDoubleOrDefault()),
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 18.sp,
                             color = RFColor.UxComponentColorDarkOrange
@@ -516,7 +482,7 @@ private fun CreditContentTextAndGraph() = ChildStateful<IndexManagerViewModel> {
                     )
 
                     RFText(
-                        text = CurrencyFormatter.formatCurrencyInSoles((uiState.data?.balance).toDoubleOrDefault()),
+                        text = Formatters.formatCurrencyInSoles((uiState.data?.balance).toDoubleOrDefault()),
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 18.sp,
                             color = RFColor.UxComponentColorDarkCerulean
@@ -552,7 +518,10 @@ private fun CreditContentTextAndGraph() = ChildStateful<IndexManagerViewModel> {
                     )
 
                     RFText(
-                        text = stringResource(R.string.percentage_format, uiState.commercialGoal.toString()) ,
+                        text = stringResource(
+                            R.string.percentage_format,
+                            uiState.commercialGoal.toString()
+                        ),
                         textStyle = RFTextStyle.Roboto(
                             fontSize = 18.sp,
                             color = RFColor.UxComponentColorIrisBlue
@@ -568,7 +537,7 @@ private fun CreditContentTextAndGraph() = ChildStateful<IndexManagerViewModel> {
                 .size(200.dp)
                 .padding(start = 16.dp)
         ) {
-            CircleGraph(
+            RFCircleGraph(
                 approvedLine = uiState.data?.lineCred.toDoubleOrDefault(),
                 availableBalance = uiState.data?.balance?.toNumericValue()!!.toDouble(),
                 commercialGoal = uiState.commercialGoal!!.toInt(),
@@ -598,7 +567,10 @@ private fun HeaderHomeSection() {
                 ReusableSpacer(8.dp)
 
                 RFText(
-                    text = stringResource(R.string.welcome_user, UserSession.getUserData(UserSession.NAME)),
+                    text = stringResource(
+                        R.string.welcome_user,
+                        UserSession.getUserData(UserSession.NAME)
+                    ),
                     textStyle = RFTextStyle.Roboto(
                         fontSize = 20.sp,
                         color = RFColor.UxComponentColorWhite

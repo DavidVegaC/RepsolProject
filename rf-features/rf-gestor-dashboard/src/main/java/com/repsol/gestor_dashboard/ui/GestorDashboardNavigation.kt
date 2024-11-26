@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.repsol.gestor_dashboard.ui.cards.CardsScreen
 import com.repsol.gestor_dashboard.ui.dashboard.ConductoresScreen
 import com.repsol.gestor_dashboard.ui.dashboard.ConfiguracionesScreen
 import com.repsol.gestor_dashboard.ui.dashboard.GestorDashboardScreen
@@ -52,7 +53,7 @@ fun NavigationHost(
     NavHost(navController = navController, startDestination = "inicio") {
         composable("inicio") { IndexManagerScreen(Modifier.padding(paddingValues)) }
         composable("vehiculos") { VehicleScreen(Modifier.padding(paddingValues)) }
-        composable("tarjetas") { TarjetasScreen(Modifier.padding(paddingValues)) }
+        composable("tarjetas") { CardsScreen(Modifier.padding(paddingValues)) }
         composable("conductores") { ConductoresScreen(Modifier.padding(paddingValues)) }
         composable("tracking") { TrackingScreen(Modifier.padding(paddingValues)) }
         composable("reportes") { ReportesScreen(Modifier.padding(paddingValues)) }

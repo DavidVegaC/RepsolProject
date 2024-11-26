@@ -12,4 +12,7 @@ object GestorDashboardGraph {
 
     @Serializable
     object Vehicles
+
+    @Serializable
+    object Cards
 }

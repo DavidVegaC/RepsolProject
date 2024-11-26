@@ -3,8 +3,8 @@
     <string name="profile_driver">Perfil: Conductor</string>
     <string name="driver_card_details">Datos de tarjeta</string>
     <string name="driver_stops_control">Topes y control</string>
-    <string name="driver_stops_days">Tipo de control a %s</string>
-    <string name="driver_stops_limit_amount">Tope %s</string>
+    <string name="driver_stops_days">Tipo de control a %1s</string>
+    <string name="driver_stops_limit_amount">Tope %1s</string>
     <string name="driver_balance">Saldo</string>
     <string name="driver_high_date">Fecha alta</string>
     <string name="driver_cost_center">Centro de Costo</string>

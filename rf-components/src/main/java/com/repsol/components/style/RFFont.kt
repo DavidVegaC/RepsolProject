@@ -26,6 +26,9 @@ enum class RFFont(
     ),
     RobotoMedium(
         font = Font(R.font.roboto_medium)
+    ),
+    RobotoBold(
+        font = Font(R.font.roboto_bold)
     )
 }
 
