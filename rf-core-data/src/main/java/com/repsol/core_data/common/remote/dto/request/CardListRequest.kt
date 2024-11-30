@@ -1,4 +1,4 @@
-package com.repsol.driver_dashboard.data.remote.dto.request
+package com.repsol.core_data.common.remote.dto.request
 
 import kotlinx.serialization.Serializable
 

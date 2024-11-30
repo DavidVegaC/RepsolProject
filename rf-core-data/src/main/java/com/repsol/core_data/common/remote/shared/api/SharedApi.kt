@@ -1,13 +1,13 @@
-package com.repsol.driver_dashboard.data.remote.api
+package com.repsol.core_data.common.remote.shared.api
 
-import com.repsol.driver_dashboard.data.remote.dto.request.CardListRequest
-import com.repsol.driver_dashboard.data.remote.dto.response.CardListResponse
+import com.repsol.core_data.common.remote.dto.request.CardListRequest
+import com.repsol.core_data.common.remote.dto.response.CardListResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
 
-interface IndexApi {
+interface SharedApi {
 
     @POST("v2/Card/list")
     suspend fun postCardList(

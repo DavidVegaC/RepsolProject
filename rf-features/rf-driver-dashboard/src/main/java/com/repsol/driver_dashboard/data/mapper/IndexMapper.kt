@@ -1,9 +1,9 @@
 package com.repsol.driver_dashboard.data.mapper
 
+import com.repsol.core_data.common.remote.dto.response.CardListResponse
+import com.repsol.core_data.common.remote.dto.response.CardResponse
 import com.repsol.core_domain.common.entities.Currency
 import com.repsol.core_domain.common.error.GlobalError
-import com.repsol.driver_dashboard.data.remote.dto.response.CardListResponse
-import com.repsol.driver_dashboard.data.remote.dto.response.CardResponse
 import com.repsol.driver_dashboard.domain.entity.DriverData
 import com.repsol.tools.utils.CurrencyFormatter
 import com.repsol.tools.utils.UNLIMITED

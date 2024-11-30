@@ -1,7 +1,5 @@
 package com.repsol.driver_dashboard.di
 
-import com.repsol.core_data.common.remote.ApiCreator
-import com.repsol.driver_dashboard.data.remote.api.IndexApi
 import com.repsol.driver_dashboard.data.remote.data_source.DefaultIndexRemoteDS
 import com.repsol.driver_dashboard.data.remote.data_source.IndexRemoteDS
 import com.repsol.driver_dashboard.data.repository.IndexRepositoryImpl
@@ -10,7 +8,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,10 +20,4 @@ object Module {
     fun provideIndexRemoteDS(
         remoteDS: DefaultIndexRemoteDS
     ): IndexRemoteDS = remoteDS
-
-    @Singleton
-    @Provides
-    fun provideIndexApi(
-        apiCreator: ApiCreator
-    ): IndexApi = apiCreator.create()
 }

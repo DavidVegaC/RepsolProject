@@ -1,7 +1,6 @@
-package com.repsol.driver_dashboard.data.remote.dto.response
+package com.repsol.core_data.common.remote.dto.response
 
 import com.google.gson.annotations.SerializedName
-import com.repsol.core_data.common.remote.dto.response.ErrorManagerResponse
 import kotlinx.serialization.Serializable
 
 @Serializable
