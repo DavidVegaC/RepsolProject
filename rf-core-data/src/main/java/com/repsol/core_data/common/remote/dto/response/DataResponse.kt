@@ -5,4 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 class DataResponse(
     val cardSearchListDto: List<CardResponse>,
+    val pagination: PaginationResponse,
 )

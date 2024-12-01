@@ -13,12 +13,12 @@ sealed class GetKpiResult {
 
 fun DataOutput<KpiData>.handleResult(): GetKpiResult {
     if (this.isSuccessful()) {
-        val kpiData: KpiData = this.data
+        val kpiData: KpiData = data
         val errorManager = kpiData.errorManager
         if (errorManager.code.contentEquals("0").not()) {
             return GetKpiResult.ServiceError(message = errorManager.message.orEmpty())
         }
-        return GetKpiResult.Success(data)
+        return GetKpiResult.Success(kpiData)
     } else {
         val error: DataError.Default = this.error as DataError.Default
         return GetKpiResult.Error(message = error.message)

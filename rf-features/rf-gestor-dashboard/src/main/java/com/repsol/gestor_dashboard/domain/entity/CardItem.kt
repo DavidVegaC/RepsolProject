@@ -1,16 +1,13 @@
-package com.repsol.core_data.common.remote.dto.response
+package com.repsol.gestor_dashboard.domain.entity
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-class CardResponse(
+class CardItem(
     val creationDate: String,
     val descriptionState: String,
     val descriptionCenterCost: String,
     val featureDescription: String,
     val descriptionControlType: String,
     val cardNumber: String,
-    val driver: String,
+    val driverName: String,
     val maxAmount: String,
     val actAmount: String,
     val numberPlate: String,
