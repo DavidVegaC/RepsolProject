@@ -9,7 +9,3 @@ klean {
         useUiDependencies = true
     }
 }
-
-dependencies {
-    api(project(":rf-assets"))
-}

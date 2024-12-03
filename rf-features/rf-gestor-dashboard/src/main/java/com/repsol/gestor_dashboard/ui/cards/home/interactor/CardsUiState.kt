@@ -2,40 +2,49 @@ package com.repsol.gestor_dashboard.ui.cards.home.interactor
 
 import com.repsol.core_data.common.remote.dto.request.CardListRequest
 import com.repsol.core_domain.common.ActionCardModel
+import com.repsol.core_domain.common.entities.AttentionType
+import com.repsol.core_domain.common.entities.CardFeature
+import com.repsol.core_domain.common.entities.CardState
+import com.repsol.core_domain.common.entities.DocumentType
+import com.repsol.core_domain.common.entities.MileageStatus
+import com.repsol.core_domain.common.entities.PhysicalCardState
 import com.repsol.core_domain.common.entities.ServiceStatus
 import com.repsol.core_platform.handler.UiState
 import com.repsol.gestor_dashboard.domain.entity.CardItem
 import com.repsol.rf_assets.R
 import com.repsol.tools.utils.EMPTY_STRING
+import com.repsol.tools.utils.convertDateToStringFormat
+import java.util.Date
 
 data class CardsUiState(
     val kpiStatus: ServiceStatus = ServiceStatus.BLANK,
     val active: Int = 0,
     val inactive: Int = 0,
     val canceled: Int = 0,
-    val searchText: String = EMPTY_STRING,
-    val totalOptions: List<String> = listOf("Vehiculo", "Conductor", "Pool"),
     val selectedOptions: List<String> = emptyList(),
     val cards: List<CardItem> = emptyList(),
+
+    //Campos para armar el request
     val cardNumber: String = EMPTY_STRING,
     val plate: String = EMPTY_STRING,
-    val driverName: String = EMPTY_STRING,
-    val createDateFrom: String = EMPTY_STRING,
-    val createDateTo: String = EMPTY_STRING,
-    val listStatus: List<String> = emptyList(),
-    val listCodeFeatureCard: List<String> = emptyList(),
-    val listCodeAssignmentCard: List<String> = emptyList(),
     val listIdCenterCost: List<String> = emptyList(),
-    val pageNumber: Int = 0,
+    val listCodeAssignmentCard: List<String> = emptyList(),
+    val selectedCardFeatures: List<CardFeature> = emptyList(),
+    val startDate: Date? = null,
+    val endDate: Date? = null,
+    val selectedCardStates: List<CardState> = emptyList(),
+    val driverName: String = EMPTY_STRING,
+    val selectedDocumentTypes: List<DocumentType> = emptyList(),
     val numberDocument: String = EMPTY_STRING,
-    val listStatePhysicalCard: List<String> = emptyList(),
-    val listTypeAttention: List<String> = emptyList(),
-    val listTypeDocument: List<String> = emptyList(),
-    val listStatusMileage: List<String> = emptyList(),
+    val selectedAttentionTypes: List<AttentionType> = emptyList(),
+    val selectedPhysicalCardStates: List<PhysicalCardState> = emptyList(),
+    val selectedMileageStatus: List<MileageStatus> = emptyList(),
+    val pageNumber: Int = 0,
     val currentPage: Int = 0,
     val totalRows: Int = 0,
     val pageSize: Int = 0,
     val totalPage: Int = 0,
+    val isLoadingFilter: Boolean = false,
 ): UiState {
     val actionCards: List<ActionCardModel> = listOf(
         ActionCardModel(id = 1, icon = R.drawable.ic_add, title = R.string.new_card),
@@ -54,21 +63,29 @@ data class CardsUiState(
         cardNumber = cardNumber,
         plate = plate,
         driverName = driverName,
-        createDateFrom = createDateFrom,
-        createDateTo = createDateTo,
-        listStatus = listStatus,
-        listCodeFeatureCard = listCodeFeatureCard,
+        createDateFrom = convertDateToStringFormat(startDate),
+        createDateTo = convertDateToStringFormat(endDate),
+        listStatus = selectedCardStates.map { it.code },
+        listCodeFeatureCard = selectedCardFeatures.map { it.code },
         listCodeAssignmentCard = listCodeAssignmentCard,
         listIdCenterCost = listIdCenterCost,
         pageNumber = pageNumber,
         pageSize = PAGE_SIZE,
         numberDocument = numberDocument,
-        listStatePhysicalCard = listStatePhysicalCard,
-        listTypeAttention = listTypeAttention,
-        listTypeDocument = listTypeDocument,
-        listStatusMileage = listStatusMileage,
+        listStatePhysicalCard = selectedPhysicalCardStates.map { it.code },
+        listTypeAttention = selectedAttentionTypes.map { it.code },
+        listTypeDocument = selectedDocumentTypes.map { it.code },
+        listStatusMileage = selectedMileageStatus.map { it.code },
         cardTypes = "2",
     )
+
+    //campos para el filtro
+    val cardFeatures: List<CardFeature> = CardFeature.entries
+    val cardStates: List<CardState> = CardState.entries
+    val documentTypes: List<DocumentType> = DocumentType.entries
+    val attentionTypes: List<AttentionType> = AttentionType.entries
+    val physicalCardStates: List<PhysicalCardState> = PhysicalCardState.entries
+    val mileageStatus: List<MileageStatus> = MileageStatus.entries
 
     companion object {
 

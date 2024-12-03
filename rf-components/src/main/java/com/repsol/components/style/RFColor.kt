@@ -32,6 +32,7 @@ sealed class RFColor(val color: Color) {
     object UxComponentRippleColorOnPrimary : RFColor(Color(0x31FFFFFF))
     object UxComponentColorLinen : RFColor(Color(0xFFFFF0E0))
     object UxComponentColorTransparent : RFColor(Color(0x00000000))
+    object UxComponentColorNickel : RFColor(Color(0xFF727272))
     class CustomColor(color: Color) : RFColor(color)
 }
 

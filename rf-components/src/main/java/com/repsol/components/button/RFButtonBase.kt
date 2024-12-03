@@ -6,10 +6,12 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -38,7 +40,8 @@ fun RFButtonBase(
     icon: (@Composable () -> Unit)? = null,
     shape: Shape,
     contentModifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isLoading: Boolean = false,
 ) {
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -72,12 +75,20 @@ fun RFButtonBase(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                icon?.invoke()
-                RFText(
-                    modifier = textModifier,
-                    text = text,
-                    textStyle = textStyle
-                )
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = rfColorState.textEnabled.color,
+                        strokeWidth = 2.dp // Grosor del indicador
+                    )
+                } else {
+                    icon?.invoke() // Mostrar el icono si no está cargando
+                    RFText(
+                        modifier = textModifier,
+                        text = text,
+                        textStyle = textStyle
+                    )
+                }
             }
         }
     }
@@ -101,6 +112,7 @@ private fun RFButtonBasePreview() {
             textColorDisabled = RFColor.UxComponentColorDarkGray,
         ),
         shape = RoundedCornerShape(4.dp),
-        onClick = { }
+        onClick = { },
+        isLoading = true
     )
 }

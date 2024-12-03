@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top_bar_filter_cards_title">Filtros</string>
+    <string name="card_type">Tipo de tarjeta</string>
+    <string name="creation_date_card">Fecha de creación</string>
+    <string name="card_status_card">Estado de tarjeta</string>
+    <string name="driver_card">Conductor</string>
+    <string name="document_card">Documento</string>
+    <string name="attention_card">Atención</string>
+    <string name="cost_center_card">Centro de costo</string>
+    <string name="physical_card">Tarjeta fisíca</string>
+    <string name="controlkm_card">Control de KM</string>
+    <string name="aplly_filter_card">Aplicar filtros</string>
+    <string name="clear_filter_card">Limpiar filtros</string>
+    <string name="placeholder_driver_card">Ejm. Juan Pérez</string>
+    <string name="placeholder_document_card">Ejm. 98989898</string>
+    <string name="number_document_card">Número de documento</string>
+
+</resources>

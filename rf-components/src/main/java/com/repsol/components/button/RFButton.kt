@@ -28,7 +28,8 @@ fun RFButton(
     rfShape: RFButtonShape = RFButtonShape.Regular,
     rfOnColor: RFButtonOnColor = RFButtonOnColor.Background,
     contentModifier: Modifier = Modifier,
-    borderStrokeWidth: Dp? = null
+    borderStrokeWidth: Dp? = null,
+    isLoading: Boolean = false,
 ) {
     val colorState = when (rfButtonStyle) {
         RFTextButtonStyle.Primary -> rfOnColor.getPrimaryColorState()
@@ -66,7 +67,8 @@ fun RFButton(
         rfColorState = colorState,
         shape = rfShape.getShape(),
         icon = icon,
-        contentModifier = contentModifier
+        contentModifier = contentModifier,
+        isLoading = isLoading,
     )
 }
 

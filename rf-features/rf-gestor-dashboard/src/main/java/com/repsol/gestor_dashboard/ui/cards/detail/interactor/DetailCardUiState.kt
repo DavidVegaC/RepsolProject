@@ -1,7 +1,7 @@
 package com.repsol.gestor_dashboard.ui.cards.detail.interactor
 
 import com.repsol.core_domain.common.ActionCardModel
-import com.repsol.core_domain.common.entities.FeatureCard
+import com.repsol.core_domain.common.entities.CardFeature
 import com.repsol.core_platform.handler.UiState
 import com.repsol.gestor_dashboard.domain.entity.CardItem
 import com.repsol.rf_assets.R
@@ -11,7 +11,7 @@ class DetailCardUiState(
 ): UiState {
 
     val isDriver: Boolean
-        get() = FeatureCard.isDriver(item.codeFeaturesCard)
+        get() = CardFeature.isDriver(item.codeFeaturesCard)
 
     val actionCards: List<ActionCardModel> = listOf(
         ActionCardModel(id = 1, icon = R.drawable.ic_repeat, title = R.string.convert_to_qr),

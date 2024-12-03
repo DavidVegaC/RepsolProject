@@ -23,7 +23,7 @@ import com.repsol.components.icon.RFIcon
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
-import com.repsol.rf_assets.R
+import com.repsol.rf_components.R
 
 @Composable
 fun RFItemCard(

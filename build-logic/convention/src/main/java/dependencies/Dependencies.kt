@@ -98,6 +98,7 @@ fun Project.addUiDependencies(){
     addAndroidTestDependencies()
     addComposeTestDependencies()
     dependencies {
+        implementation(libs["constraint"])
         implementation(libs["google-accompanist"])
         implementation(libs["coil"])
         implementation(libs["coil-network-okhttp"])

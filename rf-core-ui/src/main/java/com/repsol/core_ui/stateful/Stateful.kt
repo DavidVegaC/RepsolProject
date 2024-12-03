@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavBackStackEntry
 import com.repsol.core_platform.handler.UiState
 import com.repsol.core_ui.stateful.interactor.effect.RegisterGlobalUiEffects
 import com.repsol.core_ui.stateful.interactor.effect.RegisterLocalUiEffects
@@ -83,6 +84,25 @@ inline fun <reified H: ViewModel> Stateful(
         handlerFactory = { hiltViewModel<H>() }
     ) {
         content()
+    }
+}
+
+@Composable
+inline fun <reified H : ViewModel> Stateful(
+    navBackStackEntry: NavBackStackEntry,  // Agregamos el NavBackStackEntry
+    noinline content: @Composable StatefulScope<H>.() -> Unit
+) {
+    // Obtenemos el ViewModel a partir del NavBackStackEntry
+    val viewModel: H? = navBackStackEntry.viewModel()
+
+    if (viewModel != null) {
+        Stateful(handlerFactory = { viewModel }) {
+            content()
+        }
+    } else {
+        // Si el ViewModel es nulo, manejar el caso (podrías lanzar un error o usar un ViewModel por defecto)
+        // Dependiendo de la lógica que necesitas, podrías poner un fallback o mostrar una UI de error.
+        error("ViewModel not found")
     }
 }
 

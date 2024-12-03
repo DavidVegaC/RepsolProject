@@ -31,13 +31,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.repsol.components.card.RFItemCard
 import com.repsol.components.filter.RFFilter
 import com.repsol.components.graph.RFLunarTripleSegment
 import com.repsol.components.icon.RFIcon
-import com.repsol.components.multiselectbutton.MultiSelectButton
 import com.repsol.components.placeholder.RFCardError
 import com.repsol.components.placeholder.RFCardPlaceholder
 import com.repsol.components.quickactioncard.RFQuickActionCard
@@ -46,7 +46,7 @@ import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFSpannableText
 import com.repsol.components.text.RFText
-import com.repsol.core_domain.common.entities.FeatureCard
+import com.repsol.core_domain.common.entities.CardFeature
 import com.repsol.core_domain.common.entities.ServiceStatus
 import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.ScreenPreview
@@ -59,7 +59,11 @@ import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiIntent as UiI
 import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiState as UiState
 
 @Composable
-fun CardsScreen(navController: NavHostController, modifier: Modifier = Modifier) = Stateful<CardsViewModel> {
+fun CardsScreen(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    viewModel: CardsViewModel,
+) = Stateful(handlerFactory = { viewModel }) {
 
     val uiState by uiState()
 
@@ -154,7 +158,7 @@ fun CardsScreen(navController: NavHostController, modifier: Modifier = Modifier)
                 HeaderCardList()
             }
             items(uiState.cards) { card ->
-                val isDriver: Boolean = FeatureCard.isDriver(card.codeFeaturesCard)
+                val isDriver: Boolean = CardFeature.isDriver(card.codeFeaturesCard)
                 val title: String = if (isDriver) stringResource(R.string.double_string, card.typeDocumentDescription, card.numberDocument)
                 else stringResource(R.string.card_value, card.cardNumber)
                 val subTitle: String = if (isDriver) card.driverName else card.numberPlate
@@ -374,30 +378,11 @@ private fun SearchBarCustom() = ChildStateful<CardsViewModel> {
 
     RFCustomSearchBar(
         modifier = Modifier.padding(16.dp),
-        query = uiState.searchText,
+        query = uiState.plate,
         onQueryChange = { execUiIntent(UiIntent.UpdateSearchText(it)) },
         onSearchClick = { execUiIntent(UiIntent.LoadCardsBySearch) },
         icon = R.drawable.ic_search
     )
-}
-
-@Composable
-private fun MultiSelectedGroup() = ChildStateful<CardsViewModel> {
-    val uiState by uiState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp)
-    ) {
-        MultiSelectButton(
-            options = uiState.totalOptions,
-            selectedOptions = uiState.selectedOptions,
-            onOptionSelected = { execUiIntent(UiIntent.AddSelectedOption(it))},
-            onOptionDeselected = { execUiIntent(UiIntent.RemoveSelectedOption(it)) },
-            leadingIcon = R.drawable.ic_check
-        )
-    }
 }
 
 @Composable
@@ -411,6 +396,7 @@ private fun Filter() = ChildStateful<CardsViewModel> {
     ) {
 
         RFFilter(
+            modifier = Modifier.clickable { execUiIntent(UiIntent.GoToFilter) },
             radius = 24.dp,
             leadingContent = {
                 Box(
@@ -546,6 +532,6 @@ private fun ItemPagination(
 fun DefaultCardsPreview() {
     val navController = rememberNavController()
     ScreenPreview(uiState = UiState()) {
-        CardsScreen(navController)
+        CardsScreen(navController, Modifier, hiltViewModel<CardsViewModel>())
     }
 }

@@ -111,7 +111,7 @@ fun GestorDashboardScreen() = Stateful<DashboardViewModel> {
         Scaffold(
             topBar = {
                 when(currentRoute(navController)) {
-                    "inicio", "vehiculos", "cards", "conductores" -> AppBar()
+                    "inicio", "vehiculos", "cards", "conductores", "filter_cards" -> AppBar()
                 }
             },
             bottomBar = {
