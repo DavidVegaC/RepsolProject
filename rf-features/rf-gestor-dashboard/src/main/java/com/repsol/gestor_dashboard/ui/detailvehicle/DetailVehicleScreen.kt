@@ -18,10 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,11 +29,9 @@ import com.repsol.components.icon.RFIcon
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
-import com.repsol.gestor_dashboard.ui.vehicle.VehicleScreen
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.DisplayImage
 import com.repsol.tools.components.ReusableSpacer
-import com.repsol.tools.utils.Formatters
 
 @Composable
 fun DetailVehicleScreen(modifier: Modifier = Modifier) {

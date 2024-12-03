@@ -344,7 +344,7 @@ private fun DriverCardStopsAndControl() = ChildStateful<IndexDriverViewModel> {
 
             RFText(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.driver_stops_days, uiState.controlTypeDays),
+                text = stringResource(R.string.stops_days, uiState.controlTypeDays),
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 16.sp,
                     color = RFColor.UxComponentColorBlueLagoon

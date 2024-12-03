@@ -17,4 +17,11 @@
 
     <string name="type">Tipo</string>
 
+    <string name="change_status">Cambiar estado</string>
+
+    <string name="stops_days">Tipo de control a %1s</string>
+    <string name="tope_type">Tipo de tope %1s</string>
+    <string name="tope_description">Tope %1s</string>
+    <string name="double_string">%1s %2s</string>
+
 </resources>

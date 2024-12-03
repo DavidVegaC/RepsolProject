@@ -1,4 +1,4 @@
-package com.repsol.gestor_dashboard.ui.cards
+package com.repsol.gestor_dashboard.ui.cards.home
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -31,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.repsol.components.card.RFItemCard
 import com.repsol.components.filter.RFFilter
 import com.repsol.components.graph.RFLunarTripleSegment
@@ -44,19 +46,30 @@ import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFSpannableText
 import com.repsol.components.text.RFText
+import com.repsol.core_domain.common.entities.FeatureCard
 import com.repsol.core_domain.common.entities.ServiceStatus
 import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.ScreenPreview
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.rf_assets.R
 import com.repsol.tools.components.ReusableSpacer
-import com.repsol.gestor_dashboard.ui.cards.interactor.CardsUiIntent as UiIntent
-import com.repsol.gestor_dashboard.ui.cards.interactor.CardsUiState as UiState
+import com.repsol.tools.utils.EMPTY_STRING
+import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiEvent as UiEvent
+import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiIntent as UiIntent
+import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiState as UiState
 
 @Composable
-fun CardsScreen(modifier: Modifier = Modifier) = Stateful<CardsViewModel> {
+fun CardsScreen(navController: NavHostController, modifier: Modifier = Modifier) = Stateful<CardsViewModel> {
 
     val uiState by uiState()
+
+    OnUiEvent {
+        when (it) {
+            is UiEvent.GoToDetail -> {
+                navController.navigate(it.route)
+            }
+        }
+    }
 
     Box(
         modifier = modifier
@@ -141,12 +154,20 @@ fun CardsScreen(modifier: Modifier = Modifier) = Stateful<CardsViewModel> {
                 HeaderCardList()
             }
             items(uiState.cards) { card ->
+                val isDriver: Boolean = FeatureCard.isDriver(card.codeFeaturesCard)
+                val title: String = if (isDriver) stringResource(R.string.double_string, card.typeDocumentDescription, card.numberDocument)
+                else stringResource(R.string.card_value, card.cardNumber)
+                val subTitle: String = if (isDriver) card.driverName else card.numberPlate
+                val keyValue: String = if (isDriver) EMPTY_STRING else card.featureDescription
                 RFItemCard(
-                    title = stringResource(R.string.card_value, card.cardNumber),
-                    subtitle = card.numberPlate,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    title = title,
+                    subtitle = subTitle,
                     typeKey = stringResource(R.string.type),
-                    valueKey = card.featureDescription,
+                    valueKey = keyValue,
                     icon = R.drawable.ic_card_pass,
+                    onClick = { execUiIntent(UiIntent.GoToDetail(card)) },
+                    idStatus = card.statusCode,
                 )
             }
             item {
@@ -315,7 +336,8 @@ private fun Options() = ChildStateful<CardsViewModel> {
     ) {
         items(items = uiState.actionCards, key = { it.id }) { card ->
             RFQuickActionCard(
-                icon = painterResource(card.icon),
+                modifier = Modifier.size(size = 80.dp),
+                icon = card.icon,
                 text = stringResource(card.title),
                 onClick = card.onClick,
             )
@@ -354,7 +376,7 @@ private fun SearchBarCustom() = ChildStateful<CardsViewModel> {
         modifier = Modifier.padding(16.dp),
         query = uiState.searchText,
         onQueryChange = { execUiIntent(UiIntent.UpdateSearchText(it)) },
-        onSearchClick = {/*Accion de busqueda*/ },
+        onSearchClick = { execUiIntent(UiIntent.LoadCardsBySearch) },
         icon = R.drawable.ic_search
     )
 }
@@ -379,7 +401,7 @@ private fun MultiSelectedGroup() = ChildStateful<CardsViewModel> {
 }
 
 @Composable
-private fun Filter() {
+private fun Filter() = ChildStateful<CardsViewModel> {
     Row(
         Modifier
             .fillMaxWidth()
@@ -522,7 +544,8 @@ private fun ItemPagination(
 @Preview(showBackground = true)
 @Composable
 fun DefaultCardsPreview() {
+    val navController = rememberNavController()
     ScreenPreview(uiState = UiState()) {
-        CardsScreen()
+        CardsScreen(navController)
     }
 }

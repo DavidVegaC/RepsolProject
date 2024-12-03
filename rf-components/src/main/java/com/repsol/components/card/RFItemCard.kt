@@ -27,19 +27,22 @@ import com.repsol.rf_assets.R
 
 @Composable
 fun RFItemCard(
+    modifier: Modifier = Modifier,
     title: String,
     subtitle: String,
     typeKey: String,
     valueKey: String,
     @DrawableRes icon: Int,
+    isClickable: Boolean = true,
+    onClick: () -> Unit = {},
+    idStatus: String,
 ) {
     RFCard(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        onClick = { },
+        modifier = modifier,
+        onClick = onClick,
         style = RFCardStyle.Outline,
         borderColor = RFColor.UxComponentColorTransparent,
+        clickable = isClickable,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(16.dp)
@@ -74,24 +77,26 @@ fun RFItemCard(
                                 )
                             )
 
-                            Spacer(Modifier.size(5.dp))
+                            if (valueKey.isNotBlank()) {
+                                Spacer(Modifier.size(10.dp))
 
-                            Column {
-                                RFText(
-                                    text = typeKey,
-                                    textStyle = RFTextStyle.Roboto(
-                                        fontSize = 14.sp,
-                                        color = RFColor.UxComponentColorDarkGray
+                                Column {
+                                    RFText(
+                                        text = typeKey,
+                                        textStyle = RFTextStyle.Roboto(
+                                            fontSize = 14.sp,
+                                            color = RFColor.UxComponentColorDarkGray
+                                        )
                                     )
-                                )
-                                Spacer(Modifier.size(4.dp))
-                                RFText(
-                                    text = valueKey,
-                                    textStyle = RFTextStyle.Roboto(
-                                        fontSize = 14.sp,
-                                        color = RFColor.UxComponentColorCharcoal
+                                    Spacer(Modifier.size(4.dp))
+                                    RFText(
+                                        text = valueKey,
+                                        textStyle = RFTextStyle.Roboto(
+                                            fontSize = 14.sp,
+                                            color = RFColor.UxComponentColorCharcoal
+                                        )
                                     )
-                                )
+                                }
                             }
                         }
                     }
@@ -100,7 +105,7 @@ fun RFItemCard(
                             .height(24.dp)
                             .width(32.dp)
                             .background(
-                                RFColor.UxComponentColorGreen.color,
+                                Status.findById(idStatus).rfColor.color,
                                 shape = RoundedCornerShape(4.dp)
                             ),
                         contentAlignment = Alignment.Center
@@ -113,10 +118,12 @@ fun RFItemCard(
                     }
                 }
             }
-            RFIcon(
-                modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
-                painter = painterResource(R.drawable.ic_arrow_right),
-            )
+            if (isClickable) {
+                RFIcon(
+                    modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
+                    painter = painterResource(R.drawable.ic_arrow_right),
+                )
+            }
         }
     }
 }
@@ -129,6 +136,7 @@ private fun RFItemCardPreview() {
         subtitle = "ZEC-54232",
         typeKey = "Combustible",
         valueKey = "Regular",
-        icon = android.R.drawable.ic_secure
+        icon = android.R.drawable.ic_secure,
+        idStatus = "1"
     )
 }

@@ -24,13 +24,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -48,7 +45,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -65,6 +61,7 @@ import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.ScreenPreview
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.gestor_dashboard.ui.NavigationHost
+import com.repsol.gestor_dashboard.ui.currentRoute
 import com.repsol.gestor_dashboard.ui.dashboard.interactor.BottomBarContent
 import com.repsol.gestor_dashboard.ui.dashboard.interactor.DrawerOnlyContent
 import com.repsol.rf_assets.R
@@ -74,7 +71,6 @@ import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiEvent as UiEven
 import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiIntent as UiIntent
 import com.repsol.gestor_dashboard.ui.dashboard.interactor.HomeUiState as UiState
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GestorDashboardScreen() = Stateful<DashboardViewModel> {
     val uiState by uiState()
@@ -114,34 +110,9 @@ fun GestorDashboardScreen() = Stateful<DashboardViewModel> {
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(end = 12.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.ic_logo_repsol),
-                                contentDescription = null
-                            )
-
-                            RFText(
-                                text = stringResource(R.string.flotas),
-                                textStyle = RFTextStyle.Repsol(
-                                    fontSize = 28.sp,
-                                    color = RFColor.UxComponentColorMidnightBlue
-                                ),
-                                textAlign = TextAlign.End
-                            )
-                        }
-
-                    }, colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = RFColor.UxComponentColorWhite.color,
-                    )
-                )
+                when(currentRoute(navController)) {
+                    "inicio", "vehiculos", "cards", "conductores" -> AppBar()
+                }
             },
             bottomBar = {
                 BottomAppBar(
@@ -209,9 +180,9 @@ fun GestorDashboardScreen() = Stateful<DashboardViewModel> {
 
                             IconButton(
                                 onClick = {
-                                    execUiIntent(UiIntent.UpdateContent(BottomBarContent.TARJETAS))
+                                    execUiIntent(UiIntent.UpdateContent(BottomBarContent.CARDS))
                                 },
-                                enabled = uiState.selectedContent != BottomBarContent.TARJETAS,
+                                enabled = uiState.selectedContent != BottomBarContent.CARDS,
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Column(
@@ -220,17 +191,17 @@ fun GestorDashboardScreen() = Stateful<DashboardViewModel> {
                                 ) {
                                     RFIcon(
                                         modifier = Modifier.size(24.dp),
-                                        painter = if (uiState.selectedContent == BottomBarContent.TARJETAS) painterResource(
+                                        painter = if (uiState.selectedContent == BottomBarContent.CARDS) painterResource(
                                             R.drawable.ic_card_filled
                                         ) else painterResource(R.drawable.ic_card_ouline),
-                                        tint = if (uiState.selectedContent == BottomBarContent.TARJETAS) RFColor.UxComponentColorSafetyOrange else RFColor.UxComponentColorCharcoal
+                                        tint = if (uiState.selectedContent == BottomBarContent.CARDS) RFColor.UxComponentColorSafetyOrange else RFColor.UxComponentColorCharcoal
                                     )
 
                                     RFText(
                                         text = stringResource(R.string.cards_dashboard),
                                         textStyle = RFTextStyle.Repsol(
                                             fontSize = 12.sp,
-                                            color = if (uiState.selectedContent == BottomBarContent.TARJETAS) RFColor.UxComponentColorSafetyOrange else RFColor.UxComponentColorCharcoal
+                                            color = if (uiState.selectedContent == BottomBarContent.CARDS) RFColor.UxComponentColorSafetyOrange else RFColor.UxComponentColorCharcoal
                                         )
                                     )
                                 }
@@ -391,8 +362,8 @@ fun CustomDrawerContent(
             DrawerOption(
                 icon = R.drawable.ic_card_ouline,
                 label = stringResource(R.string.cards_dashboard),
-                isSelected = uiState.selectedContent == BottomBarContent.TARJETAS
-            ) { onOptionSelected(BottomBarContent.TARJETAS, null) }
+                isSelected = uiState.selectedContent == BottomBarContent.CARDS
+            ) { onOptionSelected(BottomBarContent.CARDS, null) }
 
             HorizontalDivider(
                 Modifier.padding(horizontal = 24.dp),
@@ -516,6 +487,39 @@ fun DrawerOption(
             )
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppBar() {
+    TopAppBar(
+        {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 12.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_logo_repsol),
+                    contentDescription = null
+                )
+
+                RFText(
+                    text = stringResource(R.string.flotas),
+                    textStyle = RFTextStyle.Repsol(
+                        fontSize = 28.sp,
+                        color = RFColor.UxComponentColorMidnightBlue
+                    ),
+                    textAlign = TextAlign.End
+                )
+            }
+
+        }, colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = RFColor.UxComponentColorWhite.color,
+        )
+    )
 }
 
 @Composable

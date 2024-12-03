@@ -1,5 +1,6 @@
 package com.repsol.components.quickactioncard
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,8 +14,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.repsol.components.card.RFCard
@@ -25,11 +27,17 @@ import com.repsol.components.style.RFTextStyle
 import com.repsol.components.text.RFText
 
 @Composable
-fun RFQuickActionCard(icon: Painter, text: String, onClick: (() -> Unit) = {}) {
+fun RFQuickActionCard(
+    modifier: Modifier = Modifier.size(80.dp),
+    radius: Int = 5,
+    @DrawableRes icon: Int,
+    text: String,
+    onClick: (() -> Unit) = {},
+) {
     RFCard(
-        modifier = Modifier.size(width = 100.dp, height = 100.dp),
-        radius = 16.dp,
-        borderColor = RFColor.UxComponentColorWhite,
+        modifier = modifier,
+        radius = radius.dp,
+        borderColor = RFColor.UxComponentColorTransparent,
         onClick = onClick,
         style = RFCardStyle.Outline
     ) {
@@ -42,13 +50,13 @@ fun RFQuickActionCard(icon: Painter, text: String, onClick: (() -> Unit) = {}) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(32.dp)
                     .background(
                         RFColor.UxComponentColorPowderBlue.color,
                         shape = RoundedCornerShape(8.dp)
                     )
             ) {
-                RFIcon(painter = icon)
+                RFIcon(painter = painterResource(icon))
             }
 
             Spacer(modifier = Modifier.size(4.dp))
@@ -56,7 +64,7 @@ fun RFQuickActionCard(icon: Painter, text: String, onClick: (() -> Unit) = {}) {
             RFText(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 4.dp),
                 text = text,
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 12.sp,
@@ -67,4 +75,13 @@ fun RFQuickActionCard(icon: Painter, text: String, onClick: (() -> Unit) = {}) {
             )
         }
     }
+}
+
+@Composable
+@Preview
+private fun RFQuickActionCardPreview() {
+    RFQuickActionCard(
+        icon = android.R.drawable.ic_secure,
+        text = "Convertir a QR"
+    )
 }

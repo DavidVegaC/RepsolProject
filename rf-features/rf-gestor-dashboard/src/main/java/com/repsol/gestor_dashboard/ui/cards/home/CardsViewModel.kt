@@ -1,6 +1,8 @@
-package com.repsol.gestor_dashboard.ui.cards
+package com.repsol.gestor_dashboard.ui.cards.home
 
+import android.util.Base64
 import androidx.lifecycle.SavedStateHandle
+import com.repsol.core_data.common.utils.JSON
 import com.repsol.core_domain.common.entities.ServiceStatus
 import com.repsol.core_platform.CoreViewModel
 import com.repsol.gestor_dashboard.domain.entity.KpiData
@@ -10,9 +12,9 @@ import com.repsol.gestor_dashboard.domain.usecase.GetKpiUseCase
 import com.repsol.gestor_dashboard.domain.usecase.PostCardListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import com.repsol.gestor_dashboard.ui.cards.interactor.CardsUiEvent as UiEvent
-import com.repsol.gestor_dashboard.ui.cards.interactor.CardsUiIntent as UiIntent
-import com.repsol.gestor_dashboard.ui.cards.interactor.CardsUiState as UiState
+import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiEvent as UiEvent
+import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiIntent as UiIntent
+import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiState as UiState
 
 @HiltViewModel
 class CardsViewModel @Inject constructor(
@@ -41,6 +43,15 @@ class CardsViewModel @Inject constructor(
                 loadNextCards()
             }
             is UiIntent.UpdateSearchText -> setUiState { copy(searchText = intent.newValue) }
+            is UiIntent.LoadCardsBySearch -> {
+                setUiState{
+                    copy(
+                        pageNumber = 1,
+                        plate = searchText,
+                    )
+                }
+                loadNextCards()
+            }
             is UiIntent.AddSelectedOption -> setUiState {
                 copy(selectedOptions = selectedOptions.toMutableList().apply {
                     if (!contains(intent.option)) add(intent.option)
@@ -61,7 +72,16 @@ class CardsViewModel @Inject constructor(
                 }
                 loadNextCards()
             }
+            is UiIntent.GoToDetail -> {
+                val cardItemString: String = JSON.stringify(intent.item)
+                val cardItemBase64 = Base64.encodeToString(cardItemString.toByteArray(), Base64.DEFAULT)
+                navigation("cards_detail/$cardItemBase64")
+            }
         }
+    }
+
+    private suspend fun navigation(route: String) {
+        UiEvent.GoToDetail(route).send()
     }
 
     private suspend fun loadKpi() {

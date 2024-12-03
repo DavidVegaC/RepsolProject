@@ -1,4 +1,4 @@
-package com.repsol.gestor_dashboard.ui.cards.interactor
+package com.repsol.gestor_dashboard.ui.cards.home.interactor
 
 import com.repsol.core_data.common.remote.dto.request.CardListRequest
 import com.repsol.core_domain.common.ActionCardModel

@@ -11,7 +11,9 @@ import com.repsol.gestor_dashboard.domain.entity.CardItem
 import com.repsol.gestor_dashboard.domain.entity.CardList
 import com.repsol.gestor_dashboard.domain.entity.KpiData
 import com.repsol.tools.utils.Formatters
+import com.repsol.tools.utils.NO
 import com.repsol.tools.utils.UNLIMITED
+import com.repsol.tools.utils.YES
 
 object CardsMapper {
 
@@ -59,6 +61,13 @@ object CardsMapper {
             actAmount = formatAmount(response.actAmount),
             numberPlate = response.numberPlate,
             statusCode = response.statusCode,
+            codeFeaturesCard = response.codeFeaturesCard,
+            typeDocumentDescription = response.typeDocumentDescription,
+            numberDocument = response.numberDocument,
+            descriptionBusinessRule = response.descriptionBusinessRule,
+            descriptionStateRequestPhysicalCard = response.descriptionStateRequestPhysicalCard,
+            hasControlKm = if (response.km) YES else NO,
+            descriptionResetAmount = response.descriptionResetAmount,
         )
     }
 

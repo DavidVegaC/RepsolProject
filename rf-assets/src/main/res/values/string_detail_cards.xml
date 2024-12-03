@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_detail_cards">Detalle de Tarjeta</string>
+    <string name="cards_stops_control">Topes y control</string>
+    <string name="cards_business_rule">Regla comercial</string>
+    <string name="cards_physical">Tarjeta física</string>
+    <string name="cards_control_km">Control de Km.</string>
+
+    <string name="convert_to_qr">Convertir a QR</string>
+    <string name="manage_the_card">Gestionar la tarjeta</string>
+
+</resources>

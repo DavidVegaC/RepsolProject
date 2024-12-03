@@ -10,7 +10,7 @@ data class HomeUiState(
 enum class BottomBarContent(val route: String) {
     INICIO("inicio"),
     VEHICULOS("vehiculos"),
-    TARJETAS("tarjetas"),
+    CARDS("cards"),
     CONDUCTORES("conductores"),
     NONE("")
 }
