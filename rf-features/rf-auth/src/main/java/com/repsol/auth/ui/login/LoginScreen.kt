@@ -1,6 +1,7 @@
 package com.repsol.auth.ui.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +19,8 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -69,6 +70,7 @@ fun LoginScreen() = Stateful<LoginViewModel> {
             is UiEvent.GoToGestorDashboard -> {
                 navController.navigate(MainGraph.GestorDashboardModule)
             }
+
             is UiEvent.GoToDriverDashboard -> {
                 navController.navigate(MainGraph.DriverDashboardModule)
             }
@@ -87,6 +89,7 @@ fun LoginContent() {
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(RFColor.UxComponentColorWhite.color)
             .statusBarsPadding()
     ) {
 
@@ -269,13 +272,25 @@ fun PasswordTextField(
                 .focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
-                }
+                },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = RFColor.UxComponentColorWhite.color.copy(alpha = 0.7f),
+                unfocusedContainerColor = RFColor.UxComponentColorWhite.color,
+                focusedIndicatorColor = RFColor.UxComponentColorBlueLagoon.color.copy(alpha = 0.7f),
+                unfocusedIndicatorColor = RFColor.UxComponentColorGainsboro.color,
+                errorContainerColor = RFColor.UxComponentColorWhite.color,
+                errorIndicatorColor = RFColor.UxComponentColorRed.color.copy(alpha = 0.7f)
+            )
         )
 
         uiState.passwordError?.let { errorText ->
-            Text(
+            RFText(
+                modifier = Modifier.padding(top = 4.dp),
                 text = errorText,
-                color = Color.Red
+                textStyle = RFTextStyle.Roboto(
+                    fontSize = 12.sp,
+                    color = RFColor.UxComponentColorRed
+                )
             )
         }
     }
@@ -297,11 +312,13 @@ fun EmailTextField(
             value = uiState.email,
             onValueChange = onEmailChanged,
             placeholder = {
-                RFText(text = stringResource(R.string.placeholder_email),
+                RFText(
+                    text = stringResource(R.string.placeholder_email),
                     textStyle = RFTextStyle.Roboto(
                         fontSize = 16.sp,
                         color = RFColor.UxComponentColorDarkGray
-                    ))
+                    )
+                )
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -323,13 +340,25 @@ fun EmailTextField(
                 .focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
-                }
+                },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = RFColor.UxComponentColorWhite.color.copy(alpha = 0.7f),
+                unfocusedContainerColor = RFColor.UxComponentColorWhite.color,
+                focusedIndicatorColor = RFColor.UxComponentColorBlueLagoon.color.copy(alpha = 0.7f),
+                unfocusedIndicatorColor = RFColor.UxComponentColorGainsboro.color,
+                errorContainerColor = RFColor.UxComponentColorWhite.color,
+                errorIndicatorColor = RFColor.UxComponentColorRed.color.copy(alpha = 0.7f)
+            )
         )
 
         uiState.emailError?.let { errorText ->
-            Text(
+            RFText(
+                modifier = Modifier.padding(top = 4.dp),
                 text = errorText,
-                color = Color.Red
+                textStyle = RFTextStyle.Roboto(
+                    fontSize = 12.sp,
+                    color = RFColor.UxComponentColorRed
+                )
             )
         }
     }

@@ -51,7 +51,7 @@ fun RFCircleGraph(
         // Dibujar el fondo gris del anillo interno
         drawArc(
             color = RFColor.UxComponentColorWhiteSmoke.color, // Fondo gris
-            startAngle = 0f,
+            startAngle = -90f,
             sweepAngle = 360f,
             useCenter = false,
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
@@ -62,7 +62,7 @@ fun RFCircleGraph(
         // Dibujar el anillo interno (Celeste - Progreso de la meta comercial)
         drawArc(
             color = RFColor.UxComponentColorIrisBlue.color, // Celeste
-            startAngle = 0f,
+            startAngle = -90f,
             sweepAngle = commercialGoalPercentage * 360f,
             useCenter = false,
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round),

@@ -19,5 +19,6 @@
     <string name="percentage_format">%s%%</string>
     <string name="debtWarning">Tienes una deuda vencida</string>
     <string name="what_do_you_want_to_do">¿Qué deseas hacer?</string>
+    <string name="prices_fuel">Precios de combustible líquido</string>
     <string name="download_all_prices">Descargar todos los precios</string>
 </resources>

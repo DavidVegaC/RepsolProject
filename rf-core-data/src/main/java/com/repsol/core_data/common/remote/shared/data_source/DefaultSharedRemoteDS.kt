@@ -16,6 +16,6 @@ class DefaultSharedRemoteDS @Inject constructor(
         userEmail: String,
         request: CardListRequest,
     ): DataOutput<CardListResponse> {
-        return safeApiCall { api.postCardList(clientId, userEmail, request) }
+        return safeApiCall { api.postCardList(clientId, request) }
     }
 }

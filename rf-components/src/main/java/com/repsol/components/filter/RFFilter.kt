@@ -1,6 +1,9 @@
 package com.repsol.components.filter
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -26,7 +30,8 @@ fun RFFilter(
     borderColor: RFColor = RFColor.UxComponentColorGrey,
     style: RFFilterStyle = RFFilterStyle.Elevation,
     leadingContent: (@Composable () -> Unit)? = null,
-    textContent: @Composable () -> Unit
+    textContent: @Composable () -> Unit,
+    onClick: (() -> Unit)? = null
 ) {
     RFFilterImpl(
         modifier = modifier,
@@ -35,7 +40,8 @@ fun RFFilter(
         borderColor = borderColor,
         style = style,
         leadingContent = leadingContent,
-        textContent = textContent
+        textContent = textContent,
+        onClick = onClick
     )
 }
 
@@ -47,7 +53,8 @@ private fun RFFilterImpl(
     borderColor: RFColor = RFColor.UxComponentColorGrey,
     style: RFFilterStyle = RFFilterStyle.Elevation,
     leadingContent: (@Composable () -> Unit)? = null,
-    textContent: @Composable () -> Unit
+    textContent: @Composable () -> Unit,
+    onClick: (() -> Unit)? = null
 ) {
     val elevation = if (style == RFFilterStyle.Elevation) 4.dp else 0.dp
     val border = if (style == RFFilterStyle.Elevation) 0.dp else 1.dp
@@ -65,6 +72,11 @@ private fun RFFilterImpl(
             border = BorderStroke(border, borderColor.color),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = elevation
+            ),
+            modifier = Modifier.clickable(
+                onClick = {onClick?.invoke()},
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
             )
         ) {
             Row(

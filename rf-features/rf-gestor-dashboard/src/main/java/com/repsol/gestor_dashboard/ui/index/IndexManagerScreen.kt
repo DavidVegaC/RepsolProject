@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -79,13 +78,13 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             item {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(500.dp)
+                        .height(400.dp)
                         .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
                         .background(
                             brush = Brush.linearGradient(
@@ -98,38 +97,31 @@ fun IndexManagerScreen(modifier: Modifier = Modifier) = Stateful<IndexManagerVie
                         )
                 ) {
                     Column(
-                        Modifier.padding(horizontal = 16.dp)
+                        Modifier.padding(horizontal = 24.dp)
                     ) {
                         HeaderHomeSection()
-                        ReusableSpacer(16.dp)
+                        ReusableSpacer(24.dp)
                         when {
                             uiState.isLoading -> PlaceholderInfoSection()
                             !uiState.errorMessage.isNullOrEmpty() -> CreditInfoSectionError()
                             uiState.showRetry -> {
                                 execUiIntent(UiIntent.OnRetryClick)
                             }
+
                             else -> CreditInfoSection()
                         }
                     }
                 }
             }
             item {
-                Box(
-                    Modifier.layout { measurable, constraints ->
-                        val placeable = measurable.measure(constraints)
-                        layout(placeable.width, placeable.height - 110.dp.roundToPx()) {
-                            placeable.placeRelative(0, -110.dp.roundToPx())
-                        }
-                    }
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
                 ) {
-
-                    Column(Modifier.fillMaxWidth()) {
-                        OptionHomeManager()
-                        DownloadAllPrices()
-                    }
-
+                    OptionHomeManager()
+                    DownloadAllPrices()
                 }
-
             }
         }
 
@@ -192,10 +184,33 @@ private fun DownloadAllPrices() = ChildStateful<IndexManagerViewModel> {
     // Verifica si la versión de Android es menor que Android 10 (API 29)
     val isApi29OrHigher = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
     val context: Context = LocalContext.current
+
+    Row(
+        Modifier.padding(top = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RFIcon(
+            painter = painterResource(R.drawable.ic_ees),
+            tint = RFColor.UxComponentColorDarkOrange
+
+        )
+
+        ReusableSpacer(8.dp)
+
+        RFText(
+            text = stringResource(R.string.prices_fuel),
+            textStyle = RFTextStyle.RobotoMedium(
+                fontSize = 20.sp,
+                color = RFColor.UxComponentColorCharcoal
+            )
+        )
+
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 24.dp, horizontal = 16.dp),
+            .padding(vertical = 24.dp),
         contentAlignment = Alignment.Center
     ) {
         RFButton(
@@ -236,8 +251,7 @@ private fun OptionHomeManager() {
     )
 
     Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        verticalAlignment = Alignment.CenterVertically
     ) {
         RFIcon(
             painter = painterResource(R.drawable.ic_save),
@@ -249,22 +263,24 @@ private fun OptionHomeManager() {
 
         RFText(
             text = stringResource(R.string.what_do_you_want_to_do),
-            textStyle = RFTextStyle.Roboto(
+            textStyle = RFTextStyle.RobotoMedium(
                 fontSize = 20.sp,
-                color = RFColor.UxComponentColorWhite
+                color = RFColor.UxComponentColorCharcoal
             )
         )
 
     }
+
+    ReusableSpacer(24.dp)
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(max = 400.dp),
-        contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        userScrollEnabled = false,
     ) {
         items(actions.size) { index ->
             val (label, icon) = actions[index]
@@ -272,11 +288,10 @@ private fun OptionHomeManager() {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(150.dp)
-                    .padding(8.dp)
+                    .size(120.dp)
                     .background(
                         RFColor.UxComponentColorWhite.color,
-                        shape = RoundedCornerShape(16.dp)
+                        shape = RoundedCornerShape(12.dp)
                     )
             ) {
 
@@ -322,7 +337,7 @@ private fun CreditInfoSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(300.dp)
+            .height(250.dp)
             .background(RFColor.UxComponentColorWhite.color, shape = RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
@@ -340,15 +355,19 @@ private fun CreditInfoSection() {
 private fun CreditInfoSectionError() = ChildStateful<IndexManagerViewModel> {
     RFCardError(
         R.drawable.image_home_error,
+        R.drawable.ic_repeat,
         stringResource(R.string.view_not_available_at_this_time),
         stringResource(R.string.retry),
+        height = 250.dp,
         onClick = { execUiIntent(UiIntent.OnRetryClick) }
     )
 }
 
 @Composable
 private fun PlaceholderInfoSection() {
-    RFCardPlaceholder()
+    RFCardPlaceholder(
+        height = 250.dp
+    )
 }
 
 @Composable
@@ -407,8 +426,8 @@ private fun DebtWarning() = ChildStateful<IndexManagerViewModel> {
 private fun CreditContentTextAndGraph() = ChildStateful<IndexManagerViewModel> {
     val uiState by uiState()
     Row(
-        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
@@ -538,9 +557,12 @@ private fun CreditContentTextAndGraph() = ChildStateful<IndexManagerViewModel> {
                 .padding(start = 16.dp)
         ) {
             RFCircleGraph(
-                approvedLine = uiState.data?.lineCred.toDoubleOrDefault(),
+                /*approvedLine = uiState.data?.lineCred.toDoubleOrDefault(),
                 availableBalance = uiState.data?.balance?.toNumericValue()!!.toDouble(),
-                commercialGoal = uiState.commercialGoal!!.toInt(),
+                commercialGoal = uiState.commercialGoal!!.toInt(),*/
+                approvedLine = 750000.00,
+                availableBalance = 137582.63,
+                commercialGoal = 81,
             )
         }
 
@@ -571,14 +593,14 @@ private fun HeaderHomeSection() {
                         R.string.welcome_user,
                         UserSession.getUserData(UserSession.NAME)
                     ),
-                    textStyle = RFTextStyle.Roboto(
+                    textStyle = RFTextStyle.RobotoMedium(
                         fontSize = 20.sp,
                         color = RFColor.UxComponentColorWhite
                     )
                 )
             }
 
-            ReusableSpacer(4.dp)
+            ReusableSpacer(12.dp)
 
             RFText(
                 text = UserSession.getUserData(UserSession.BUSINESS_NAME),
@@ -604,6 +626,6 @@ private fun HeaderHomeSection() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultHomeScreenPreview() {
+private fun DefaultHomeScreenPreview() {
     IndexManagerScreen()
 }

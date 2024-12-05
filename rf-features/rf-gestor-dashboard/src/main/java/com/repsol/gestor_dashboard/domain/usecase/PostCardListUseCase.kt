@@ -14,7 +14,7 @@ class PostCardListUseCase @Inject constructor(
     override suspend fun invoke(params: CardListRequest): PostCardListResult {
         //val clientId: String = SessionStorage.getString(UserSession.ID_CLIENT).orEmpty()
         //val email: String = SessionStorage.getString(UserSession.EMAIL).orEmpty()
-        val clientId = "0348118803"
+        val clientId = "0348117784"
         val email = "HMORANCU@EVERIS.COM"
         return repository.postCardList(clientId, email, params).handleResult()
     }

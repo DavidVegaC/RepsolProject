@@ -29,13 +29,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.repsol.components.button.RFButton
+import com.repsol.components.button.style.RFButtonOnColor
+import com.repsol.components.card.RFCard
+import com.repsol.components.card.RFCardStyle
 import com.repsol.components.icon.RFIcon
 import com.repsol.components.style.RFColor
 import com.repsol.components.style.RFTextStyle
@@ -102,6 +111,10 @@ fun DatePickerTextField(
     val iconColor =
         if (startDate != null && endDate != null) RFColor.UxComponentColorEasternBlue else RFColor.UxComponentColorDarkGray
 
+    val texColor =
+        if (startDate != null && endDate != null) RFColor.UxComponentColorCharcoal else RFColor.UxComponentColorDarkGray
+
+
     OutlinedTextField(
         value = displayText,
         onValueChange = {},
@@ -119,13 +132,9 @@ fun DatePickerTextField(
             .padding(vertical = 8.dp),
         enabled = false,
         colors = TextFieldDefaults.colors(
-            //Contenedor
-            focusedContainerColor = RFColor.UxComponentColorWhite.color,
-            unfocusedContainerColor = RFColor.UxComponentColorWhite.color,
-
-            //Borde
-            focusedIndicatorColor = RFColor.UxComponentColorGainsboro.color,
-            unfocusedIndicatorColor = RFColor.UxComponentColorGainsboro.color,
+            disabledTextColor = texColor.color,
+            disabledContainerColor = RFColor.UxComponentColorWhite.color,
+            disabledIndicatorColor = RFColor.UxComponentColorGainsboro.color
         )
     )
 }
@@ -139,25 +148,25 @@ fun DateRangePickerContent(
     val today = Calendar.getInstance()
     var selectedStartDate by remember { mutableStateOf<Date?>(null) }
     var selectedEndDate by remember { mutableStateOf<Date?>(null) }
-    var displayedMonth by remember { mutableStateOf(today.clone() as Calendar) }
+    var displayedMonth by remember { mutableStateOf(today) }
 
-    Card(
-        modifier = modifier.wrapContentHeight()
+    RFCard(
+        modifier = modifier
+            .wrapContentHeight()
             .background(RFColor.UxComponentColorWhite.color),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        style = RFCardStyle.Outline,
+        borderColor = RFColor.UxComponentColorWhite,
+        clickable = false
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             CalendarHeader(
                 displayedMonth = displayedMonth,
                 onPreviousMonth = {
-                    (displayedMonth.clone() as Calendar).apply {
-                        add(Calendar.MONTH, -1)
-                    }
+                    displayedMonth = (displayedMonth.clone() as Calendar).apply { add(Calendar.MONTH, -1) }
                 },
                 onNextMonth = {
-                    (displayedMonth.clone() as Calendar).apply {
-                        add(Calendar.MONTH, 1)
-                    }
+                    displayedMonth = (displayedMonth.clone() as Calendar).apply { add(Calendar.MONTH, 1) }
                 }
             )
 
@@ -204,15 +213,27 @@ fun CalendarActions(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        TextButton(onClick = onCancel) {
-            Text("Cancelar")
-        }
-        Button(
+        RFButton(
+            modifier = Modifier.height(48.dp),
+            text = "Cancelar",
+            textStyle = RFTextStyle.Roboto(
+                fontSize = 16.sp,
+                color = RFColor.UxComponentColorCharcoal
+            ),
+            onClick = onCancel,
+            rfOnColor = RFButtonOnColor.Primary,
+        )
+
+        RFButton(
+            modifier = Modifier.height(48.dp),
             onClick = onAccept,
-            enabled = isAcceptEnabled
-        ) {
-            Text("Aceptar")
-        }
+            text = "Aceptar",
+            textStyle = RFTextStyle.Roboto(
+                fontSize = 16.sp,
+                color = if(isAcceptEnabled) RFColor.UxComponentColorDarkOrange else RFColor.UxComponentColorCharcoal
+            ),
+            rfOnColor = RFButtonOnColor.Primary
+        )
     }
 }
 
@@ -296,9 +317,9 @@ fun CalendarHeader(
         Box(
             Modifier
                 .size(48.dp)
+                .clip(RoundedCornerShape(8.dp))
                 .background(
                     RFColor.UxComponentColorPowderBlue.color,
-                    shape = RoundedCornerShape(24.dp)
                 )
         ) {
             IconButton(onClick = onPreviousMonth) {
@@ -320,9 +341,9 @@ fun CalendarHeader(
         Box(
             Modifier
                 .size(48.dp)
+                .clip(RoundedCornerShape(8.dp))
                 .background(
                     RFColor.UxComponentColorPowderBlue.color,
-                    shape = RoundedCornerShape(24.dp)
                 )
         ) {
             IconButton(onClick = onNextMonth) {
@@ -344,9 +365,9 @@ fun CalendarDaysOfWeek() {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_WEEK, firstDayOfWeek)
 
-        for (i in 0..6){
+        for (i in 0..6) {
             val dayName = SimpleDateFormat("E", Locale("es")).format(calendar.time)
-            days.add(dayName.substring(0,1).uppercase())
+            days.add(dayName.substring(0, 1).uppercase())
             calendar.add(Calendar.DAY_OF_WEEK, 1)
         }
         days

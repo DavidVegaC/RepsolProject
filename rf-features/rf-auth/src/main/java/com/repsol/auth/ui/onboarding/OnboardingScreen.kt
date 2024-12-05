@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -99,12 +101,12 @@ fun OnboardingContent(
 
     HorizontalPager(
         state = pagerState,
-        modifier = modifier.height(350.dp),
+        modifier = modifier.height(500.dp),
     ) {
         val onboardingPage = uiState.pages[it]
         Box(
             modifier = modifier
-                .padding(10.dp)
+                .padding(vertical = 24.dp)
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
@@ -123,7 +125,7 @@ fun OnboardingContent(
     ) {
         repeat(pagerState.pageCount) { iteration ->
             val color =
-                if (pagerState.currentPage == iteration) RFColor.UxComponentColorSafetyOrange.color else RFColor.UxComponentColorWhite.color
+                if (pagerState.currentPage == iteration) RFColor.UxComponentColorSafetyOrange.color else RFColor.UxComponentColorWhiteSmoke.color
             Box(
                 modifier = modifier
                     .padding(2.dp)
@@ -137,9 +139,10 @@ fun OnboardingContent(
 
     if (isLastPage) {
         RFButton(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .height(48.dp)
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 100.dp),
             text = stringResource(R.string.start),
             onClick = onStart
         )
@@ -161,14 +164,17 @@ fun OnboardingContent(
                     .padding(start = 24.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                RFText(text = stringResource(R.string.skip),
+                RFText(
+                    text = stringResource(R.string.skip),
                     textStyle = RFTextStyle.Roboto(
                         fontSize = 16.sp
-                    ))
+                    )
+                )
             }
 
             RFButton(
-                modifier = modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
                     .weight(1f)
                     .height(48.dp)
                     .padding(horizontal = 24.dp),
@@ -186,10 +192,12 @@ fun OnboardingContent(
 fun OnboardingPageContent(onboardingPage: OnboardingPage) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         RFText(
+            Modifier.padding(horizontal = 36.dp),
             text = stringResource(onboardingPage.titleRes),
             textStyle = RFTextStyle.Repsol(
                 color = RFColor.UxComponentColorSafetyOrange,
@@ -198,16 +206,13 @@ fun OnboardingPageContent(onboardingPage: OnboardingPage) {
             textAlign = TextAlign.Center
         )
 
-        ReusableSpacer(24.dp)
-
         Image(
             painter = painterResource(onboardingPage.imageRes),
             contentDescription = stringResource(R.string.onboarding_content_description_carousel)
         )
 
-        ReusableSpacer(24.dp)
-
         RFText(
+            Modifier.padding(horizontal = 36.dp),
             text = stringResource(onboardingPage.descriptionRes),
             textStyle = RFTextStyle.Roboto(
                 color = RFColor.UxComponentColorGrey,
@@ -230,7 +235,7 @@ fun OnboardingLogo(modifier: Modifier) {
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewOnboarding(){
+fun PreviewOnboarding() {
     ScreenPreview(
         uiState = OnboardingUiState(
             pages = listOf(

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
@@ -103,7 +104,7 @@ private fun DetailVehicle() = ChildStateful<DetailCardViewModel> {
     RFCard(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 8.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 8.dp ,bottom = 16.dp ),
         style = RFCardStyle.Outline,
         borderColor = RFColor.UxComponentColorTransparent,
         clickable = false,
@@ -168,8 +169,6 @@ private fun HeaderDetail() = ChildStateful<DetailCardViewModel> {
 
     val subTitle: String = if (uiState.isDriver) uiState.item.driverName else uiState.item.numberPlate
 
-    val keyValue: String = if (uiState.isDriver) EMPTY_STRING else uiState.item.featureDescription
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -193,7 +192,7 @@ private fun HeaderDetail() = ChildStateful<DetailCardViewModel> {
                 title = title,
                 subtitle = subTitle,
                 typeKey = stringResource(R.string.type),
-                valueKey = keyValue,
+                valueKey = uiState.item.featureDescription,
                 icon = R.drawable.ic_card_pass,
                 isClickable = false,
                 idStatus = uiState.item.statusCode,
@@ -216,7 +215,7 @@ private fun QuickActionCardList() = Stateful<DetailCardViewModel> {
     ){
         uiState.actionCards.forEach { card ->
             RFQuickActionCard(
-                modifier = Modifier.size(size = 80.dp),
+                modifier = Modifier.size(size = 98.dp),
                 icon = card.icon,
                 text = stringResource(card.title),
                 onClick = card.onClick,
@@ -236,7 +235,7 @@ private fun StopsAndControl() = ChildStateful<DetailCardViewModel> {
     RFCard(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 24.dp),
         style = RFCardStyle.Outline,
         borderColor = RFColor.UxComponentColorTransparent,
         clickable = false
@@ -323,8 +322,7 @@ private fun AvailableBalance() = ChildStateful<DetailCardViewModel> {
     RFCard(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .padding(top = 8.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 8.dp),
         style = RFCardStyle.Outline,
         borderColor = RFColor.UxComponentColorTransparent,
         clickable = false,
@@ -364,8 +362,7 @@ private fun BusinessRule() = ChildStateful<DetailCardViewModel> {
         Modifier
             .fillMaxWidth()
             .heightIn(120.dp)
-            .padding(horizontal = 20.dp)
-            .padding(top = 8.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 8.dp),
         style = RFCardStyle.Outline,
         borderColor = RFColor.UxComponentColorTransparent,
         clickable = false,
@@ -385,7 +382,7 @@ private fun BusinessRule() = ChildStateful<DetailCardViewModel> {
             )
 
             RFText(
-                modifier = Modifier.fillMaxWidth().padding(top = 2.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 text = uiState.item.descriptionBusinessRule,
                 textStyle = RFTextStyle.Repsol(
                     fontSize = 28.sp,
@@ -402,12 +399,12 @@ private fun PhysicalCardAndControlKM() = ChildStateful<DetailCardViewModel> {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 8.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
 
         RFCard(
-            Modifier.weight(1f).fillMaxHeight(),
+            Modifier.weight(1f).wrapContentHeight(),
             style = RFCardStyle.Outline,
             borderColor = RFColor.UxComponentColorTransparent,
             clickable = false,
@@ -423,7 +420,7 @@ private fun PhysicalCardAndControlKM() = ChildStateful<DetailCardViewModel> {
                 )
 
                 RFText(
-                    modifier = Modifier.fillMaxWidth().padding(top = 2.dp),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     text = uiState.item.descriptionStateRequestPhysicalCard,
                     textStyle = RFTextStyle.Repsol(
                         fontSize = 28.sp,
@@ -435,7 +432,7 @@ private fun PhysicalCardAndControlKM() = ChildStateful<DetailCardViewModel> {
         }
 
         RFCard(
-            Modifier.weight(1f).fillMaxHeight(),
+            Modifier.weight(1f).wrapContentHeight(),
             style = RFCardStyle.Outline,
             borderColor = RFColor.UxComponentColorTransparent,
             clickable = false,

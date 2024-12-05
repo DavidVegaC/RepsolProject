@@ -84,13 +84,13 @@ fun CardsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             item {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(410.dp)
+                        .heightIn(400.dp)
                         .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
                         .background(
                             brush = Brush.linearGradient(
@@ -103,7 +103,7 @@ fun CardsScreen(
                         )
                 ) {
                     Column(
-                        Modifier.padding(horizontal = 16.dp, vertical = 24.dp)
+                        Modifier.padding(horizontal = 24.dp, vertical = 24.dp)
                     ) {
                         HeaderSection()
                         ReusableSpacer(24.dp)
@@ -137,7 +137,7 @@ fun CardsScreen(
                 Box(
                     Modifier.layout { measurable, constraints ->
                         val placeable = measurable.measure(constraints)
-                        val offset = 100.dp.roundToPx().coerceAtMost(placeable.height)
+                        val offset = 120.dp.roundToPx().coerceAtMost(placeable.height)
                         val newHeight = (placeable.height - offset).coerceAtLeast(0)
                         layout(placeable.width, newHeight) {
                             placeable.placeRelative(0, -offset)
@@ -162,13 +162,15 @@ fun CardsScreen(
                 val title: String = if (isDriver) stringResource(R.string.double_string, card.typeDocumentDescription, card.numberDocument)
                 else stringResource(R.string.card_value, card.cardNumber)
                 val subTitle: String = if (isDriver) card.driverName else card.numberPlate
-                val keyValue: String = if (isDriver) EMPTY_STRING else card.featureDescription
+
                 RFItemCard(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
                     title = title,
                     subtitle = subTitle,
                     typeKey = stringResource(R.string.type),
-                    valueKey = keyValue,
+                    valueKey = card.featureDescription,
                     icon = R.drawable.ic_card_pass,
                     onClick = { execUiIntent(UiIntent.GoToDetail(card)) },
                     idStatus = card.statusCode,
@@ -194,7 +196,7 @@ private fun HeaderSection() {
 
             RFText(
                 text = stringResource(R.string.my_cards),
-                textStyle = RFTextStyle.RobotoMedium(
+                textStyle = RFTextStyle.RobotoBold(
                     fontSize = 20.sp,
                     color = RFColor.UxComponentColorWhite
                 )
@@ -299,6 +301,7 @@ private fun KpiItem(rfColor: RFColor, title: String, count: Int) {
 fun InfoSectionError() {
     RFCardError(
         R.drawable.image_home_error,
+        R.drawable.ic_repeat,
         stringResource(R.string.view_not_available_at_this_time),
         stringResource(R.string.retry),
         onClick = { }
@@ -311,7 +314,7 @@ private fun Options() = ChildStateful<CardsViewModel> {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.padding(horizontal = 24.dp)
     ) {
         RFIcon(
             painter = painterResource(R.drawable.ic_save),
@@ -323,7 +326,7 @@ private fun Options() = ChildStateful<CardsViewModel> {
 
         RFText(
             text = stringResource(R.string.what_do_you_want_to_do),
-            textStyle = RFTextStyle.RobotoMedium(
+            textStyle = RFTextStyle.RobotoBold(
                 fontSize = 20.sp,
                 color = RFColor.UxComponentColorWhite
             )
@@ -340,7 +343,7 @@ private fun Options() = ChildStateful<CardsViewModel> {
     ) {
         items(items = uiState.actionCards, key = { it.id }) { card ->
             RFQuickActionCard(
-                modifier = Modifier.size(size = 80.dp),
+                modifier = Modifier.size(size = 90.dp),
                 icon = card.icon,
                 text = stringResource(card.title),
                 onClick = card.onClick,
@@ -356,7 +359,7 @@ private fun SearchBarCustom() = ChildStateful<CardsViewModel> {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.padding(horizontal = 24.dp)
     ) {
         RFIcon(
             painter = painterResource(R.drawable.ic_menu_filled),
@@ -368,7 +371,7 @@ private fun SearchBarCustom() = ChildStateful<CardsViewModel> {
 
         RFText(
             text = stringResource(R.string.list_general),
-            textStyle = RFTextStyle.RobotoMedium(
+            textStyle = RFTextStyle.RobotoBold(
                 fontSize = 20.sp,
                 color = RFColor.UxComponentColorCharcoal
             )
@@ -377,7 +380,7 @@ private fun SearchBarCustom() = ChildStateful<CardsViewModel> {
     }
 
     RFCustomSearchBar(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(24.dp),
         query = uiState.plate,
         onQueryChange = { execUiIntent(UiIntent.UpdateSearchText(it)) },
         onSearchClick = { execUiIntent(UiIntent.LoadCardsBySearch) },
@@ -390,18 +393,17 @@ private fun Filter() = ChildStateful<CardsViewModel> {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 24.dp),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         RFFilter(
-            modifier = Modifier.clickable { execUiIntent(UiIntent.GoToFilter) },
             radius = 24.dp,
             leadingContent = {
                 Box(
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(40.dp)
                         .background(
                             color = RFColor.UxComponentColorDiamond.color,
                             shape = CircleShape
@@ -423,7 +425,8 @@ private fun Filter() = ChildStateful<CardsViewModel> {
                         color = RFColor.UxComponentColorCharcoal
                     )
                 )
-            }
+            },
+            onClick = { execUiIntent(UiIntent.GoToFilter) }
 
         )
     }
@@ -439,7 +442,9 @@ private fun HeaderCardList() = ChildStateful<CardsViewModel> {
         val displayHeaderTotalList = stringResource(R.string.display_register_cards, displayCountList)
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
         ) {
             RFText(
                 text = displayHeaderTotalList,
@@ -466,7 +471,9 @@ private fun FooterPagination() = ChildStateful<CardsViewModel> {
 
     if (uiState.cards.isNotEmpty()) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 30.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp, bottom = 30.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             ItemPagination(uiState.isEnabledPreviousPaginate, R.drawable.ic_left_paginate) {

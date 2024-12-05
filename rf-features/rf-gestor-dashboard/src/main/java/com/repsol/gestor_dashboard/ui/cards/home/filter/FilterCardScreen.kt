@@ -114,7 +114,7 @@ private fun CardFilterControlButton() = ChildStateful<CardsViewModel> {
     val uiState by uiState()
     Box(
         Modifier.fillMaxSize()
-            .padding(bottom = 24.dp),
+            .padding(bottom = 24.dp, top = 24.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -154,7 +154,7 @@ private fun CardCostCenter() {
         "Centro de costo 05"
     )
 
-    Column(Modifier.padding(horizontal = 24.dp, vertical = 24.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -166,11 +166,6 @@ private fun CardCostCenter() {
                     fontSize = 16.sp,
                     color = RFColor.UxComponentColorGrey
                 )
-            )
-
-            RFClickableText(
-                text = stringResource(R.string.all),
-                onClick = {},
             )
         }
 
@@ -188,7 +183,7 @@ private fun CardCostCenter() {
 private fun AddOptionsCardFeature() = ChildStateful<CardsViewModel> {
     val uiState by uiState()
 
-    Column(Modifier.padding(horizontal = 20.dp).padding(top = 32.dp, bottom = 16.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -209,7 +204,7 @@ private fun AddOptionsCardFeature() = ChildStateful<CardsViewModel> {
         }
 
         MultiSelectButton(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 12.dp),
             options = uiState.cardFeatures.map { it.description },
             selectedOptions = uiState.selectedCardFeatures.map { it.description },
             onOptionSelected = { option ->
@@ -229,7 +224,7 @@ private fun AddOptionsCardFeature() = ChildStateful<CardsViewModel> {
 private fun AddRangeCreationDate() = ChildStateful<CardsViewModel> {
     val uiState by uiState()
 
-    Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -245,7 +240,7 @@ private fun AddRangeCreationDate() = ChildStateful<CardsViewModel> {
         }
 
         RFCustomDateRangePicker(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 12.dp),
             startDate = uiState.startDate,
             endDate = uiState.endDate,
             onChangeValue = { startDate, endDate -> execUiIntent(UiIntent.OnChangeValueForDateRange(startDate, endDate)) },
@@ -258,7 +253,7 @@ private fun AddRangeCreationDate() = ChildStateful<CardsViewModel> {
 private fun AddOptionsCardState() = ChildStateful<CardsViewModel> {
     val uiState by uiState()
 
-    Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -279,7 +274,7 @@ private fun AddOptionsCardState() = ChildStateful<CardsViewModel> {
         }
 
         MultiSelectButton(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 12.dp),
             options = uiState.cardStates.map { it.description },
             selectedOptions = uiState.selectedCardStates.map { it.description },
             onOptionSelected = { option ->
@@ -302,7 +297,7 @@ private fun AddDriverName() = ChildStateful<CardsViewModel> {
     var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
 
-    Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         RFText(
             text = stringResource(R.string.driver_card),
             textStyle = RFTextStyle.Roboto(
@@ -339,7 +334,7 @@ private fun AddDriverName() = ChildStateful<CardsViewModel> {
             ),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 16.dp)
+                .padding(top = 12.dp)
                 .focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
@@ -363,7 +358,7 @@ private fun AddOptionsDocumentType() = ChildStateful<CardsViewModel> {
     var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
 
-    Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -384,7 +379,7 @@ private fun AddOptionsDocumentType() = ChildStateful<CardsViewModel> {
         }
 
         MultiSelectButton(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 12.dp),
             options = uiState.documentTypes.map { it.description },
             selectedOptions = uiState.selectedDocumentTypes.map { it.description },
             onOptionSelected = { option ->
@@ -448,7 +443,7 @@ private fun AddOptionsDocumentType() = ChildStateful<CardsViewModel> {
 private fun AddOptionsAttentionType() = ChildStateful<CardsViewModel> {
     val uiState by uiState()
 
-    Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -469,7 +464,7 @@ private fun AddOptionsAttentionType() = ChildStateful<CardsViewModel> {
         }
 
         MultiSelectButton(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 12.dp),
             options = uiState.attentionTypes.map { it.description },
             selectedOptions = uiState.selectedAttentionTypes.map { it.description },
             onOptionSelected = { option ->
@@ -489,7 +484,7 @@ private fun AddOptionsAttentionType() = ChildStateful<CardsViewModel> {
 private fun AddOptionsPhysicalCardState() = ChildStateful<CardsViewModel> {
     val uiState by uiState()
 
-    Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -510,7 +505,7 @@ private fun AddOptionsPhysicalCardState() = ChildStateful<CardsViewModel> {
         }
 
         MultiSelectButton(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 12.dp),
             options = uiState.physicalCardStates.map { it.description },
             selectedOptions = uiState.selectedPhysicalCardStates.map { it.description },
             onOptionSelected = { option ->
@@ -531,7 +526,7 @@ private fun AddOptionsPhysicalCardState() = ChildStateful<CardsViewModel> {
 private fun AddOptionsMileageStatus() = ChildStateful<CardsViewModel> {
     val uiState by uiState()
 
-    Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -552,7 +547,7 @@ private fun AddOptionsMileageStatus() = ChildStateful<CardsViewModel> {
         }
 
         MultiSelectButton(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 12.dp),
             options = uiState.mileageStatus.map { it.description },
             selectedOptions = uiState.selectedMileageStatus.map { it.description },
             onOptionSelected = { option ->

@@ -12,7 +12,6 @@ interface SharedApi {
     @POST("v2/Card/list")
     suspend fun postCardList(
         @Header("ClientId") clientId: String,
-        @Header("UserEmail") userEmail: String,
         @Body request: CardListRequest,
     ): Response<CardListResponse>
 }
