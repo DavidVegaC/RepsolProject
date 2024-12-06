@@ -132,7 +132,7 @@ private fun DetailVehicle() = ChildStateful<DetailCardViewModel> {
 
             RFText(
                 modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-                text = "Mercedez Benz",
+                text = uiState.brand,
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 16.sp,
                     color = RFColor.UxComponentColorBlueLagoon
@@ -141,7 +141,7 @@ private fun DetailVehicle() = ChildStateful<DetailCardViewModel> {
 
             RFText(
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                text = "Axor 2041 LS",
+                text = uiState.model,
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 16.sp,
                     color = RFColor.UxComponentColorBlueLagoon
@@ -150,7 +150,7 @@ private fun DetailVehicle() = ChildStateful<DetailCardViewModel> {
 
             RFText(
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                text = "Tracto-Camion",
+                text = uiState.type,
                 textStyle = RFTextStyle.Roboto(
                     fontSize = 16.sp,
                     color = RFColor.UxComponentColorBlueLagoon

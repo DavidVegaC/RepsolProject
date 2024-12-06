@@ -9,8 +9,10 @@ import com.repsol.gestor_dashboard.data.remote.data_source.cards.CardsRemoteDs
 import com.repsol.gestor_dashboard.data.remote.data_source.cards.DefaultCardsRemoteDS
 import com.repsol.gestor_dashboard.data.repository.CardsRepositoryImpl
 import com.repsol.gestor_dashboard.data.repository.IndexRepositoryImpl
+import com.repsol.gestor_dashboard.data.repository.VehicleRepositoryImpl
 import com.repsol.gestor_dashboard.domain.repository.CardsRepository
 import com.repsol.gestor_dashboard.domain.repository.IndexRepository
+import com.repsol.gestor_dashboard.domain.repository.VehicleRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,4 +54,9 @@ object Module {
     fun provideCardsRepository(
         repository: CardsRepositoryImpl,
     ): CardsRepository = repository
+
+    @Provides
+    fun provideVehicleRepository(
+        repository: VehicleRepositoryImpl,
+    ): VehicleRepository = repository
 }

@@ -1,8 +1,5 @@
 package com.repsol.gestor_dashboard.domain.entity
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 class CardItem(
     val creationDate: String,
     val descriptionState: String,

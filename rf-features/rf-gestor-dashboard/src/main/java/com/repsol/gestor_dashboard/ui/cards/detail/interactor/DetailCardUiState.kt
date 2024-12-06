@@ -5,9 +5,13 @@ import com.repsol.core_domain.common.entities.CardFeature
 import com.repsol.core_platform.handler.UiState
 import com.repsol.gestor_dashboard.domain.entity.CardItem
 import com.repsol.rf_assets.R
+import com.repsol.tools.utils.EMPTY_STRING
 
-class DetailCardUiState(
+data class DetailCardUiState(
     val item: CardItem,
+    val brand: String = EMPTY_STRING,
+    val type: String = EMPTY_STRING,
+    val model: String = EMPTY_STRING,
 ): UiState {
 
     val isDriver: Boolean

@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class CardListResponse(
+class VehicleListResponse(
     @SerializedName("data")
-    val data: CardDataResponse,
+    val data: VehicleDataResponse,
     @SerializedName("error_manager")
     val error_manager: ErrorManagerResponse,
 )

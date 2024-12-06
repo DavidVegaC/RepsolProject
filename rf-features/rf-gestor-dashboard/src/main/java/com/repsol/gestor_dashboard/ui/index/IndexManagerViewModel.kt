@@ -87,7 +87,6 @@ class IndexManagerViewModel @Inject constructor(
         }
     }
 
-
     private fun handleResult(result: GetCreditBalanceResult) {
         when (result) {
             is GetCreditBalanceResult.Error -> {
