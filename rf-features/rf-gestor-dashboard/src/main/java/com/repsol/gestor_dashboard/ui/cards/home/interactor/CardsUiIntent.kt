@@ -3,6 +3,7 @@ package com.repsol.gestor_dashboard.ui.cards.home.interactor
 import com.repsol.core_domain.common.entities.AttentionType
 import com.repsol.core_domain.common.entities.CardFeature
 import com.repsol.core_domain.common.entities.CardState
+import com.repsol.core_domain.common.entities.CostCenter
 import com.repsol.core_domain.common.entities.DocumentType
 import com.repsol.core_domain.common.entities.MileageStatus
 import com.repsol.core_domain.common.entities.PhysicalCardState
@@ -33,6 +34,7 @@ sealed class CardsUiIntent: UiIntent {
     data class AddSelectedDocumentType(val option: DocumentType): CardsUiIntent()
     data class RemoveSelectedDocumentType(val option: DocumentType): CardsUiIntent()
     data class UpdateDocumentNumber(val newValue: String): CardsUiIntent()
+    data class AddSelectedCostCenter(val option: CostCenter): CardsUiIntent()
     data object SelectAllAttentionTypeOption: CardsUiIntent()
     data class AddSelectedAttentionType(val option: AttentionType): CardsUiIntent()
     data class RemoveSelectedAttentionType(val option: AttentionType): CardsUiIntent()

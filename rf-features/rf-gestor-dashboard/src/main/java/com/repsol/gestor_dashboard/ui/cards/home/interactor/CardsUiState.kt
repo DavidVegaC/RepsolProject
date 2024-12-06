@@ -5,6 +5,7 @@ import com.repsol.core_domain.common.ActionCardModel
 import com.repsol.core_domain.common.entities.AttentionType
 import com.repsol.core_domain.common.entities.CardFeature
 import com.repsol.core_domain.common.entities.CardState
+import com.repsol.core_domain.common.entities.CostCenter
 import com.repsol.core_domain.common.entities.DocumentType
 import com.repsol.core_domain.common.entities.MileageStatus
 import com.repsol.core_domain.common.entities.PhysicalCardState
@@ -39,6 +40,7 @@ data class CardsUiState(
     val selectedAttentionTypes: List<AttentionType> = emptyList(),
     val selectedPhysicalCardStates: List<PhysicalCardState> = emptyList(),
     val selectedMileageStatus: List<MileageStatus> = emptyList(),
+    val selectedCostCenter: List<CostCenter> = emptyList(),
     val pageNumber: Int = 0,
     val currentPage: Int = 0,
     val totalRows: Int = 0,
@@ -68,7 +70,7 @@ data class CardsUiState(
         listStatus = selectedCardStates.map { it.code },
         listCodeFeatureCard = selectedCardFeatures.map { it.code },
         listCodeAssignmentCard = listCodeAssignmentCard,
-        listIdCenterCost = listIdCenterCost,
+        listIdCenterCost = selectedCostCenter.map { it.code },
         pageNumber = pageNumber,
         pageSize = PAGE_SIZE,
         numberDocument = numberDocument,
@@ -86,6 +88,7 @@ data class CardsUiState(
     val attentionTypes: List<AttentionType> = AttentionType.entries
     val physicalCardStates: List<PhysicalCardState> = PhysicalCardState.entries
     val mileageStatus: List<MileageStatus> = MileageStatus.entries
+    val costCenter: List<CostCenter> = CostCenter.entries
 
     companion object {
 

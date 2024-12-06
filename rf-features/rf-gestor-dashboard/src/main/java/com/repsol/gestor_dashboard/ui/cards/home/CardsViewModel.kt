@@ -123,6 +123,15 @@ class CardsViewModel @Inject constructor(
                     selectedAttentionTypes = attentionTypes
                 )
             }
+            is UiIntent.AddSelectedCostCenter -> setUiState {
+                copy(selectedCostCenter = selectedCostCenter.toMutableList().apply {
+                    if (contains(intent.option)) {
+                        remove(intent.option)
+                    }else {
+                        add(intent.option)
+                    }
+                })
+            }
             is UiIntent.AddSelectedAttentionType -> setUiState {
                 copy(selectedAttentionTypes = selectedAttentionTypes.toMutableList().apply {
                     if (!contains(intent.option)) add(intent.option)
@@ -297,6 +306,7 @@ class CardsViewModel @Inject constructor(
                 driverName = EMPTY_STRING,
                 selectedDocumentTypes = emptyList(),
                 numberDocument = EMPTY_STRING,
+                selectedCostCenter = emptyList(),
                 selectedAttentionTypes = emptyList(),
                 selectedPhysicalCardStates = emptyList(),
                 selectedMileageStatus = emptyList(),

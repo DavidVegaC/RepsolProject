@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,6 +41,7 @@ import androidx.navigation.compose.rememberNavController
 import com.repsol.components.button.RFButton
 import com.repsol.components.button.style.RFButtonOnColor
 import com.repsol.components.dropdownmenu.RFDropdownMenu
+import com.repsol.components.dropdownmenu.RFDropdownMenuMultiSelect
 import com.repsol.components.icon.RFIcon
 import com.repsol.components.multiselectbutton.MultiSelectButton
 import com.repsol.components.rangedatepicker.RFCustomDateRangePicker
@@ -51,13 +53,16 @@ import com.repsol.components.topbar.RFTopBar
 import com.repsol.core_domain.common.entities.AttentionType
 import com.repsol.core_domain.common.entities.CardFeature
 import com.repsol.core_domain.common.entities.CardState
+import com.repsol.core_domain.common.entities.CostCenter
 import com.repsol.core_domain.common.entities.DocumentType
 import com.repsol.core_domain.common.entities.MileageStatus
 import com.repsol.core_domain.common.entities.PhysicalCardState
 import com.repsol.core_ui.stateful.ChildStateful
 import com.repsol.core_ui.stateful.Stateful
 import com.repsol.gestor_dashboard.ui.cards.home.CardsViewModel
+import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiIntent
 import com.repsol.rf_assets.R
+import com.repsol.tools.components.ReusableSpacer
 import com.repsol.gestor_dashboard.ui.cards.home.interactor.CardsUiIntent as UiIntent
 
 @Composable
@@ -145,16 +150,13 @@ private fun CardFilterControlButton() = ChildStateful<CardsViewModel> {
 }
 
 @Composable
-private fun CardCostCenter() {
-    val options = listOf(
-        "Centro de costo 01",
-        "Centro de costo 02",
-        "Centro de costo 03",
-        "Centro de costo 04",
-        "Centro de costo 05"
-    )
+private fun CardCostCenter() = ChildStateful<CardsViewModel> {
+    val uiState by uiState()
 
-    Column(Modifier.padding(horizontal = 24.dp).padding(top = 24.dp)) {
+    Column(
+        Modifier
+            .padding(horizontal = 24.dp)
+            .padding(top = 24.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -169,13 +171,18 @@ private fun CardCostCenter() {
             )
         }
 
-        RFDropdownMenu(
-            options = options,
-            onOptionSelected = { selectedOption ->
+        ReusableSpacer(4.dp)
 
+        RFDropdownMenuMultiSelect(
+            options = uiState.costCenter.map { it.description },
+            selectedOptions = uiState.selectedCostCenter.map { it.description },
+            onSelectionChange = { option ->
+                    val costCenter = uiState.costCenter.find { it.description == option }
+                    costCenter?.let {
+                        execUiIntent(UiIntent.AddSelectedCostCenter(it))
+                    }
             }
         )
-
     }
 }
 
